@@ -29,6 +29,7 @@ const dict: Record<Lang, Record<string, string>> = {
     recent_projects: "Recente projecten",
     reviews_h: "Ervaringen van klanten",
     open_menu: "Menu openen",
+    all_projects: "Alle Projecten",
 
 
     contact_company: "Bedrijfsnaam",
@@ -56,6 +57,9 @@ footer_intro: "Komtifix: handyman & onderhoud in Leidschendam en omgeving.",
 footer_address_line1: "Pr. Annalaan 343",
 footer_address_line2: "2263 XK Leidschendam",
 footer_rights: " Alle rechten voorbehouden.",
+footer_follow: "Volg ons",
+    footer_company: "Bedrijf",
+    footer_contact: "Contact",
 
     /* Footer service labels (kept for compatibility) */
     svc_laminaat: "Laminaat laten leggen",
@@ -344,6 +348,8 @@ tag_trap: "trap",
     all_services: "All services",
     recent_projects: "Recent projects",
     reviews_h: "What our clients say",
+    all_projects: "All Projects",
+
 
     /* PreHeader */
     ph_trust: "Clean work, fast & reliable",
@@ -357,7 +363,10 @@ ph_paint: "Interior & exterior painting",
     footer_intro: "Komtifix: handyman & maintenance in Leidschendam and surroundings.",
 footer_address_line1: "Pr. Annalaan 343",
 footer_address_line2: "2263 XK Leidschendam",
-footer_rights: "Komtifix. All rights reserved.",
+footer_rights: " All rights reserved.",
+footer_follow: "Follow us",
+    footer_company: "Company",
+    footer_contact: "Contact",
 
     /* Footer service labels (kept for compatibility) */
     svc_laminaat: "Laminate flooring",
@@ -614,6 +623,7 @@ tag_trap: "stairs",
     all_services: "Alle Leistungen",
     recent_projects: "Aktuelle Projekte",
     reviews_h: "Was unsere Kunden sagen",
+    all_projects: "Alle Projekte",
 
     /* PreHeader */
     ph_trust: "Sauber, schnell & zuverlässig",
@@ -626,7 +636,10 @@ ph_paint: "Innen- und Außenanstrich",
     footer_intro: "Komtifix: Handwerker & Wartung in Leidschendam und Umgebung.",
 footer_address_line1: "Pr. Annalaan 343",
 footer_address_line2: "2263 XK Leidschendam",
-footer_rights: "Komtifix. Alle Rechte vorbehalten.",
+footer_rights: " Alle Rechte vorbehalten.",
+footer_follow: "Folgen Sie uns",
+    footer_company: "Unternehmen",
+    footer_contact: "Kontakt",
 
     /* Footer service labels */
     svc_laminaat: "Laminat verlegen",
@@ -884,6 +897,8 @@ tag_trap: "Treppe",
     all_services: "Tous les services",
     recent_projects: "Projets récents",
     reviews_h: "Ce que disent nos clients",
+    all_projects: "Tous les projets",
+
 
     /* PreHeader */
     ph_trust: "Travail propre, rapide et fiable",
@@ -896,7 +911,10 @@ ph_paint: "Peinture intérieure et extérieure",
     footer_intro: "Komtifix : bricolage & entretien à Leidschendam et environs.",
 footer_address_line1: "Pr. Annalaan 343",
 footer_address_line2: "2263 XK Leidschendam",
-footer_rights: "Komtifix. Tous droits réservés.",
+footer_rights: " Tous droits réservés.",
+footer_follow: "Suivez-nous",
+    footer_company: "Entreprise",
+    footer_contact: "Contact",
 
 
     /* Footer service labels */
@@ -1157,6 +1175,8 @@ tag_trap: "escalier",
     all_services: "Tüm hizmetler",
     recent_projects: "Son projeler",
     reviews_h: "Müşterilerimiz ne diyor",
+    all_projects: "Tüm Projeler",
+
 
     /* PreHeader */
     ph_trust: "Temiz iş, hızlı ve güvenilir",
@@ -1169,7 +1189,11 @@ ph_paint: "İç ve dış boya",
     footer_intro: "Komtifix: Leidschendam ve çevresinde tadilat & bakım.",
 footer_address_line1: "Pr. Annalaan 343",
 footer_address_line2: "2263 XK Leidschendam",
-footer_rights: "Komtifix. Tüm hakları saklıdır.",
+footer_rights: " Tüm hakları saklıdır.",
+footer_follow: "Bizi takip edin",
+    footer_company: "Şirket",
+    footer_contact: "İletişim",
+
     /* Footer service labels */
     svc_laminaat: "Laminat döşeme",
     svc_badkamer: "Banyo renovasyonu",
@@ -1430,6 +1454,8 @@ tag_trap: "merdiven",
     all_services: "كل الخدمات",
     recent_projects: "أحدث المشاريع",
     reviews_h: "ماذا يقول عملاؤنا",
+    all_projects: "جميع المشاريع",
+
 
     /* PreHeader */
     ph_trust: "عمل نظيف وسريع وموثوق",
@@ -1442,7 +1468,10 @@ ph_paint: "دهان داخلي وخارجي",
     footer_intro: "Komtifix: صيانة وتجديد في لايدسخندام والمناطق المجاورة.",
 footer_address_line1: "Pr. Annalaan 343",
 footer_address_line2: "2263 XK Leidschendam",
-footer_rights: "Komtifix. جميع الحقوق محفوظة.",
+footer_rights: " جميع الحقوق محفوظة.",
+footer_follow: "تابعنا",
+    footer_company: "الشركة",
+    footer_contact: "التواصل",
 
     /* Footer service labels */
     svc_laminaat: "تركيب أرضيات لامينيت",

@@ -58,7 +58,6 @@ export default function Navbar() {
   }, []);
 
   return (
-    // z-40 allows Preheader (if z-50) to overlay dropdown
     <header className="sticky top-0 z-40">
       {/* Glass header bar */}
       <div className="border-b border-black/5 bg-white/60 supports-[backdrop-filter]:bg-white/40 backdrop-blur">
@@ -66,7 +65,6 @@ export default function Navbar() {
           {/* Brand */}
           <div className="flex items-center gap-3">
             <Link href="/" aria-label={`${brand.name} homepage`} className="flex items-center gap-3">
-              {/* Logo Image */}
               <img
                 src="/logo.svg"
                 alt={`${brand.name} logo`}
@@ -87,11 +85,7 @@ export default function Navbar() {
             </NavLink>
 
             {/* Diensten dropdown container */}
-            <div
-              className="relative h-full flex items-center"
-              onMouseEnter={openWithIntent}
-              onMouseLeave={closeWithIntent}
-            >
+            <div className="relative h-full flex items-center" onMouseEnter={openWithIntent} onMouseLeave={closeWithIntent}>
               <button
                 onClick={() => setDienstenOpen((v) => !v)}
                 onKeyDown={onDienstenKey}
@@ -105,9 +99,7 @@ export default function Navbar() {
                 )}
               >
                 {t("diensten")}
-                <span className={`text-[10px] transition-transform duration-200 ${dienstenOpen ? "rotate-180" : ""}`}>
-                  ▼
-                </span>
+                <span className={`text-[10px] transition-transform duration-200 ${dienstenOpen ? "rotate-180" : ""}`}>▼</span>
               </button>
 
               <AnimatePresence>
@@ -120,7 +112,7 @@ export default function Navbar() {
                     className="absolute top-full left-1/2 -translate-x-1/2 pt-4 w-[620px]"
                     role="menu"
                   >
-                    {/* CHANGED: solid light glass so text is always readable */}
+                    {/* solid light glass so text is always readable */}
                     <div className="rounded-2xl p-4 shadow-xl bg-white/95 backdrop-blur-xl border border-black/10">
                       <div className="grid grid-cols-2 gap-4 p-1">
                         <div className="flex flex-col gap-1">
@@ -224,8 +216,18 @@ export default function Navbar() {
 
               {/* Mobile accordion for Diensten */}
               <details className="group">
-                <summary className="cursor-pointer select-none px-3 py-3 font-semibold rounded-xl hover:bg-black/5 flex items-center justify-between text-black/80">
-                  <span className={cx(path?.startsWith("/diensten") && "text-teal")}>{t("diensten")}</span>
+                {/* FIX: force left-aligned summary text like other links */}
+                <summary
+                  className={cx(
+                    "cursor-pointer select-none px-3 py-2.5 rounded-xl hover:bg-black/5",
+                    "flex items-center justify-between",
+                    "text-black/70 font-medium",
+                    "[&::-webkit-details-marker]:hidden list-none text-left"
+                  )}
+                >
+                  <span className={cx("block text-left", path?.startsWith("/diensten") && "text-teal font-semibold")}>
+                    {t("diensten")}
+                  </span>
                   <span className="transition-transform duration-200 group-open:rotate-180">▾</span>
                 </summary>
 
@@ -328,7 +330,7 @@ function MobileLink({
       href={href}
       onClick={onClick}
       className={cx(
-        "block px-3 py-2.5 rounded-xl font-medium hover:bg-black/5 text-black/70",
+        "block px-3 py-2.5 rounded-xl font-medium hover:bg-black/5 text-black/70 text-left",
         active && "text-teal bg-teal/5 font-semibold"
       )}
     >
