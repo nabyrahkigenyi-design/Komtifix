@@ -1,29 +1,41 @@
+// src/app/layout.tsx
 import type { Metadata } from "next";
 import "./globals.css";
 import { cookies } from "next/headers";
 import { LanguageProvider, type Lang } from "@/lib/i18n";
 import { LocalBusinessJSON } from "@/components/SEO";
+import { Manrope, Playfair_Display } from "next/font/google";
+import { brand } from "@/lib/brand";
+
+const manrope = Manrope({
+  subsets: ["latin"],
+  variable: "--font-sans",
+  display: "swap",
+});
+
+const playfair = Playfair_Display({
+  subsets: ["latin"],
+  variable: "--font-serif",
+  display: "swap",
+});
 
 export const metadata: Metadata = {
-  title: "Klusdam – Bouw & Renovatie in Schiedam",
-  description:
-    "Allround bouwbedrijf in Schiedam: laminaat, badkamers, plavuizen, schilder, stukadoor, tegelzetter, vloerverwarming, WC renovatie, timmerwerk.",
-  metadataBase: new URL("https://klusdam.nl"),
+  title: `${brand.name} – Handyman & Maintenance in ${brand.location.city}`,
+  description: brand.seo.description,
+  metadataBase: new URL(brand.url),
   openGraph: {
-    title: "Klusdam – Bouw & Renovatie in Schiedam",
-    description:
-      "Vakmanschap in badkamers, tegels, vloerverwarming, stuc- en schilderwerk. Gratis offerte.",
-    url: "https://klusdam.nl",
-    siteName: "Klusdam",
-    images: [{ url: "/og.jpg", width: 1200, height: 630, alt: "Klusdam" }],
+    title: `${brand.name} – Handyman & Maintenance in ${brand.location.city}`,
+    description: brand.seo.ogDescription,
+    url: brand.url,
+    siteName: brand.name,
+    images: [{ url: "/og.jpg", width: 1200, height: 630, alt: brand.name }],
     locale: "nl_NL",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Klusdam – Bouw & Renovatie",
-    description:
-      "Vakmanschap in badkamers, tegels, vloerverwarming, stuc- en schilderwerk.",
+    title: `${brand.name} – Handyman & Maintenance`,
+    description: brand.seo.twitterDescription,
     images: ["/og.jpg"],
   },
   icons: {
@@ -48,7 +60,15 @@ export default async function RootLayout({ children }: { children: React.ReactNo
 
   return (
     <html lang={initialLang} dir={initialLang === "ar" ? "rtl" : "ltr"}>
-      <body className="antialiased bg-cream text-charcoal text-[17px]">
+      <body
+        className={[
+          "antialiased",
+          manrope.variable,
+          playfair.variable,
+          // keep existing classes for now; we’ll upgrade tokens in globals.css next
+          "bg-cream text-charcoal text-[17px]",
+        ].join(" ")}
+      >
         <LanguageProvider initialLang={initialLang}>
           {children}
           <LocalBusinessJSON />

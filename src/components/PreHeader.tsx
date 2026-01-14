@@ -1,10 +1,13 @@
+// src/components/PreHeader.tsx
 "use client";
 
 import Link from "next/link";
-import { useState, useEffect } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import LanguageMenu from "./LanguageMenu";
-import { useI18n } from "@/lib/i18n";
 import SocialLinks from "./SocialLinks";
+import { useI18n } from "@/lib/i18n";
+import { brand } from "@/lib/brand";
 
 /* Inline icons (SVG) */
 function IconShieldCheck(props: React.SVGProps<SVGSVGElement>) {
@@ -52,40 +55,60 @@ function IconPhone(props: React.SVGProps<SVGSVGElement>) {
   );
 }
 
+function telHref(phone: string) {
+  const cleaned = phone.trim();
+  return cleaned.startsWith("tel:") ? cleaned : `tel:${cleaned.replace(/\s+/g, "")}`;
+}
+
 export default function PreHeader() {
   const { t } = useI18n();
 
-  const items = [
-    { icon: IconShieldCheck, key: "ph_trust" },
-    { icon: IconPin, key: "ph_region" },
-    { icon: IconTools, key: "ph_services" },
-    { icon: IconFlame, key: "ph_floorheat" },
-    { icon: IconBrush, key: "ph_paint" },
-  ] as const;
+  // Keep keys so translations remain compatible; update wording later in i18n if you want.
+  const items = useMemo(
+    () =>
+      [
+        { icon: IconShieldCheck, key: "ph_trust" },
+        { icon: IconPin, key: "ph_region" },
+        { icon: IconTools, key: "ph_services" },
+        { icon: IconFlame, key: "ph_floorheat" },
+        { icon: IconBrush, key: "ph_paint" },
+      ] as const,
+    []
+  );
 
   const [i, setI] = useState(0);
   useEffect(() => {
-    const id = setInterval(() => setI((v) => (v + 1) % items.length), 4000);
+    const id = setInterval(() => setI((v) => (v + 1) % items.length), 4200);
     return () => clearInterval(id);
   }, [items.length]);
 
   return (
     <div className="bg-charcoal text-white text-sm">
+      {/* Subtle premium gradient line */}
+      <div className="h-[2px] bg-gradient-to-r from-transparent via-[color:var(--color-teal)]/60 to-transparent" />
+
       <div className="mx-auto max-w-7xl px-4 py-2 flex items-center justify-between">
-        {/* Left: phone with icon + offerte (desktop) */}
+        {/* Left: phone + CTA (desktop) */}
         <div className="hidden md:flex gap-4 items-center">
-          <a href="tel:+31634099060" className="hover:text-bronze inline-flex items-center gap-2">
+          <a
+            href={telHref(brand.phone)}
+            className="inline-flex items-center gap-2 text-white/90 hover:text-white"
+          >
             <IconPhone className="w-4 h-4" />
-            <span>06 34099060</span>
+            <span>{brand.phone}</span>
           </a>
-          <Link href="/contact" className="bg-bronze text-charcoal px-3 py-1 rounded hover:opacity-90">
+
+          <Link
+            href="/contact"
+            className="inline-flex items-center rounded-xl px-3 py-1.5 font-semibold text-sm text-white bg-[color:var(--color-teal)] hover:opacity-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--color-teal)]"
+          >
             {t("cta_quote")}
           </Link>
         </div>
 
-        {/* Desktop marquee (desktop only) */}
-        <div className="marquee flex-1 md:ml-8 hidden md:block" aria-label="Klusdam highlights">
-          <ul>
+        {/* Desktop marquee */}
+        <div className="marquee flex-1 md:ml-8 hidden md:block" aria-label={`${brand.name} highlights`}>
+          <ul className="text-white/85">
             {items.concat(items).map((it, idx) => (
               <li key={idx} className="inline-flex items-center gap-2">
                 <it.icon className="w-4 h-4" />
@@ -95,15 +118,24 @@ export default function PreHeader() {
           </ul>
         </div>
 
-        {/* Mobile (optional): show 1 rotating item if you want */}
-        <div className="md:hidden flex-1 px-3 truncate">
-          <div className="inline-flex items-center gap-2">
-            {(() => {
-              const It = items[i].icon;
-              return <It className="w-4 h-4 shrink-0" />;
-            })()}
-            <span className="truncate">{t(items[i].key)}</span>
-          </div>
+        {/* Mobile: rotating highlight (animated) */}
+        <div className="md:hidden flex-1 px-2 truncate">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, y: 6 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -6 }}
+              transition={{ duration: 0.18, ease: "easeOut" }}
+              className="inline-flex items-center gap-2 text-white/90"
+            >
+              {(() => {
+                const It = items[i].icon;
+                return <It className="w-4 h-4 shrink-0" />;
+              })()}
+              <span className="truncate">{t(items[i].key)}</span>
+            </motion.div>
+          </AnimatePresence>
         </div>
 
         {/* Right: socials + language */}

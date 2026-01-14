@@ -1,3 +1,4 @@
+// src/components/ServiceContent.tsx
 "use client";
 
 import Image from "next/image";
@@ -7,6 +8,7 @@ import { useRef, useState, useEffect } from "react";
 import type { Service } from "@/lib/services";
 import Breadcrumbs from "./Breadcrumbs";
 import { useI18n } from "@/lib/i18n";
+import { brand } from "@/lib/brand";
 
 type Point = { clientX: number; clientY: number };
 
@@ -38,6 +40,7 @@ export default function ServiceContent({ svc }: { svc: Service }) {
     setIndex(i);
     resetTransform();
     setOpen(true);
+    setShowUI(true);
   }
   function close() {
     setOpen(false);
@@ -66,13 +69,12 @@ export default function ServiceContent({ svc }: { svc: Service }) {
 
   // lock body scroll
   useEffect(() => {
-    if (open) {
-      const prevOverflow = document.body.style.overflow;
-      document.body.style.overflow = "hidden";
-      return () => {
-        document.body.style.overflow = prevOverflow;
-      };
-    }
+    if (!open) return;
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = prevOverflow;
+    };
   }, [open]);
 
   useEffect(() => {
@@ -84,7 +86,7 @@ export default function ServiceContent({ svc }: { svc: Service }) {
     };
     document.addEventListener("keydown", onKey);
     return () => document.removeEventListener("keydown", onKey);
-  }, [open]);
+  }, [open]); // (intentionally minimal deps)
 
   function clamp(n: number, min: number, max: number) {
     return Math.max(min, Math.min(max, n));
@@ -126,7 +128,7 @@ export default function ServiceContent({ svc }: { svc: Service }) {
     });
   }
 
-  // touch
+  // touch helpers
   function getDistance(t1: Point, t2: Point) {
     const dx = t2.clientX - t1.clientX;
     const dy = t2.clientY - t1.clientY;
@@ -135,6 +137,7 @@ export default function ServiceContent({ svc }: { svc: Service }) {
   function getCenter(t1: Point, t2: Point) {
     return { x: (t1.clientX + t2.clientX) / 2, y: (t1.clientY + t2.clientY) / 2 };
   }
+
   function onTouchStart(e: React.TouchEvent) {
     if (e.touches.length === 2) {
       const [t1, t2] = [e.touches[0], e.touches[1]];
@@ -144,6 +147,7 @@ export default function ServiceContent({ svc }: { svc: Service }) {
       pinchCenter.current = getCenter(t1, t2);
       return;
     }
+
     if (e.touches.length === 1) {
       swipeStart.current = { x: e.touches[0].clientX, y: e.touches[0].clientY, t: Date.now() };
       const now = Date.now();
@@ -156,6 +160,7 @@ export default function ServiceContent({ svc }: { svc: Service }) {
       }
     }
   }
+
   function onTouchMove(e: React.TouchEvent) {
     if (e.touches.length === 2 && pinchStartDist.current) {
       e.preventDefault();
@@ -175,6 +180,7 @@ export default function ServiceContent({ svc }: { svc: Service }) {
       setOffset(clampOffset(nx, ny, newZoom));
       return;
     }
+
     if (!dragging.current || e.touches.length !== 1 || zoom === 1) return;
     e.preventDefault();
     const tt = e.touches[0];
@@ -183,6 +189,7 @@ export default function ServiceContent({ svc }: { svc: Service }) {
     lastPos.current = { x: tt.clientX, y: tt.clientY };
     setOffset((o) => clampOffset(o.x + dx, o.y + dy, zoom));
   }
+
   function onTouchEnd(e: React.TouchEvent) {
     dragging.current = false;
     pinchStartDist.current = null;
@@ -209,18 +216,35 @@ export default function ServiceContent({ svc }: { svc: Service }) {
       <section className="relative" data-reveal>
         <div className="absolute inset-0 -z-10">
           <Image src={svc.img} alt={title} fill className="object-cover" />
+          {/* premium overlay */}
+          <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/35 to-transparent" />
         </div>
-        <div className="mx-auto max-w-7xl px-4 py-20">
-          <div className="fade-dark rounded-xl p-6 md:p-10 text-white max-w-2xl">
-            <h1 className="text-4xl md:text-5xl font-extrabold">{title}</h1>
-            <p className="mt-3 text-lg opacity-90">{excerpt}</p>
-            {svc.introKey && <p className="mt-4 opacity-95">{intro}</p>}
+
+        <div className="mx-auto max-w-7xl px-4 py-20 md:py-28">
+          <div className="max-w-2xl rounded-3xl p-6 md:p-10 text-white bg-white/10 backdrop-blur ring-1 ring-white/15">
+            <p className="text-xs uppercase tracking-widest text-white/80">
+              {brand.name} • {brand.location.city}
+            </p>
+
+            <h1 className="mt-2 font-serif text-4xl md:text-5xl tracking-tight">
+              {title}
+            </h1>
+
+            <p className="mt-3 text-lg text-white/90">{excerpt}</p>
+            {svc.introKey && <p className="mt-4 text-white/90">{intro}</p>}
 
             <div className="mt-6 flex gap-3 flex-wrap">
-              <a href="#offerte" className="inline-block bg-bronze text-charcoal px-5 py-3 rounded font-semibold">
+              <a
+                href="#offerte"
+                className="inline-flex items-center justify-center rounded-2xl px-5 py-3 font-semibold text-white bg-[color:var(--color-teal)] hover:opacity-95 transition"
+              >
                 {t("cta_quote")}
               </a>
-              <Link href="/diensten" className="underline underline-offset-4">
+
+              <Link
+                href="/diensten"
+                className="inline-flex items-center justify-center rounded-2xl px-5 py-3 font-semibold bg-white/10 hover:bg-white/15 ring-1 ring-white/15 transition"
+              >
                 ← {t("all_services")}
               </Link>
             </div>
@@ -241,9 +265,12 @@ export default function ServiceContent({ svc }: { svc: Service }) {
       {/* BODY + OFFERTE */}
       <section className="mx-auto max-w-7xl px-4 py-12 grid md:grid-cols-3 gap-8" data-reveal>
         <article className="md:col-span-2 space-y-8">
-          <div>
-            <h2 className="text-2xl font-bold">{t("why_klusdam")}</h2>
-            <ul className="list-disc pl-5 mt-3 space-y-2">
+          <div className="rounded-3xl bg-white/70 glass-border border border-black/5 p-6">
+            <h2 className="font-serif text-2xl md:text-3xl tracking-tight">
+              {t("why_brand") /* rename this i18n key later; fallback behavior depends on your i18n */}
+            </h2>
+
+            <ul className="list-disc pl-5 mt-4 space-y-2 text-black/80">
               {svc.bulletsKeys.map((k, i) => (
                 <li key={k + i}>{t(k)}</li>
               ))}
@@ -255,34 +282,54 @@ export default function ServiceContent({ svc }: { svc: Service }) {
           </div>
 
           {/* 6-IMAGE GALLERY */}
-          <div>
-            <h3 className="text-xl font-semibold">{t("examples_work")}</h3>
-            <div className="mt-4 grid grid-cols-2 md:grid-cols-3 gap-3">
-              {svc.images.slice(0, 6).map((src, i) => (
-                <button
-                  key={src + i}
-                  className="relative aspect-[4/3] overflow-hidden rounded-lg group"
-                  onClick={() => openAt(i)}
-                  aria-label={t("open_image")}
-                >
-                  <img
-                    src={src}
-                    alt={`${title} ${t("example")} ${i + 1}`}
-                    className="w-full h-full object-cover group-hover:scale-105 transition"
-                    loading="lazy"
-                  />
-                </button>
-              ))}
+          {!!svc.images.length && (
+            <div className="rounded-3xl bg-white/70 glass-border border border-black/5 p-6">
+              <h3 className="font-serif text-xl md:text-2xl tracking-tight">
+                {t("examples_work")}
+              </h3>
+
+              <div className="mt-4 grid grid-cols-2 md:grid-cols-3 gap-3">
+                {svc.images.slice(0, 6).map((src, i) => (
+                  <button
+                    key={src + i}
+                    className="relative aspect-[4/3] overflow-hidden rounded-2xl group ring-1 ring-black/5"
+                    onClick={() => openAt(i)}
+                    aria-label={t("open_image")}
+                    type="button"
+                  >
+                    <img
+                      src={src}
+                      alt={`${title} ${t("example")} ${i + 1}`}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      loading="lazy"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent opacity-90" />
+                  </button>
+                ))}
+              </div>
             </div>
-          </div>
+          )}
         </article>
 
-        <aside className="bg-cream p-6 rounded-xl" id="offerte">
-          <h3 className="font-semibold text-lg">{t("cta_quote")}</h3>
-          <p className="text-sm opacity-80">{t("quote_help")}</p>
+        <aside
+          className="rounded-3xl bg-white/70 glass-border border border-black/5 p-6 sticky top-24 self-start"
+          id="offerte"
+        >
+          <h3 className="font-serif text-lg md:text-xl tracking-tight">
+            {t("cta_quote")}
+          </h3>
+          <p className="mt-2 text-sm text-black/70">{t("quote_help")}</p>
+
           <div className="mt-4">
             <ContactForm compact />
           </div>
+
+          <div className="mt-4 text-sm text-black/70">
+            <a className="underline underline-offset-4" href={`tel:${brand.phone.replace(/\s+/g, "")}`}>
+              {t("call_now")} {brand.phone}
+            </a>
+          </div>
+
           <div className="mt-4 text-sm">
             <Link href="/diensten" className="underline underline-offset-4">
               ← {t("back_all_services")}
@@ -317,9 +364,11 @@ export default function ServiceContent({ svc }: { svc: Service }) {
             >
               ✕
             </button>
+
             <div className="text-sm bg-white/10 px-3 py-1 rounded">
               {index + 1} / {svc.images.length}
             </div>
+
             <div className="flex gap-2">
               <button
                 type="button"
@@ -338,17 +387,18 @@ export default function ServiceContent({ svc }: { svc: Service }) {
               <button
                 type="button"
                 className="text-sm px-3 py-1.5 rounded bg-white/10 hover:bg-white/20"
-                onClick={() => {
-                  setZoom(1);
-                  setOffset({ x: 0, y: 0 });
-                }}
+                onClick={resetTransform}
               >
                 {t("reset")}
               </button>
             </div>
           </div>
 
-          <div ref={boxRef} className="absolute inset-0 flex items-center justify-center" onClick={() => setShowUI((v) => !v)}>
+          <div
+            ref={boxRef}
+            className="absolute inset-0 flex items-center justify-center"
+            onClick={() => setShowUI((v) => !v)}
+          >
             <img
               src={svc.images[index]}
               alt={`${title} ${t("example")} ${index + 1}`}

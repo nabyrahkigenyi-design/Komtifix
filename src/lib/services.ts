@@ -12,6 +12,10 @@ export type Service = {
   // media
   img: string; // hero/background image
   images: string[]; // gallery images
+
+  // Komtifix UX/SEO helpers
+  order?: number; // lower = earlier
+  featured?: boolean; // homepage/footer
 };
 
 export const services: Service[] = [
@@ -30,6 +34,8 @@ export const services: Service[] = [
       "https://i.ibb.co/4gJBpwsN/laminaat-unsplash.jpg",
       "https://i.ibb.co/v4XRLXLX/laminnat-3.jpg",
     ],
+    featured: true,
+    order: 10,
   },
 
   {
@@ -53,6 +59,8 @@ export const services: Service[] = [
       "https://i.ibb.co/cX8mM2FF/Project-Zandvoort.jpg",
       "https://i.ibb.co/bgzxpV2j/Wij-realiseren-uw-droom-badkamer-Designa-Architectuur.jpg",
     ],
+    featured: true,
+    order: 20,
   },
 
   // NOTE: slug kept to avoid breaking existing links
@@ -71,6 +79,8 @@ export const services: Service[] = [
       "https://i.ibb.co/N6BMq8Dn/hoofd-Gietvloer.jpg",
       "https://i.ibb.co/dJ5640Wn/pu-gietvloer.jpg",
     ],
+    featured: true,
+    order: 30,
   },
 
   {
@@ -87,6 +97,8 @@ export const services: Service[] = [
       "https://i.ibb.co/6RThDd8f/Buiten-schilderen-voor-en-na-boeidelen-opknappen.jpg",
       "https://i.ibb.co/nssJw0TH/verticale-of-horizontaleof-schuine-strepen-schilderen.jpg",
     ],
+    featured: true,
+    order: 40,
   },
 
   {
@@ -103,6 +115,8 @@ export const services: Service[] = [
       "https://i.ibb.co/cXYKNrhS/Stucadoorsbedrijf-Peter-Jansen-Stucadoor-in-Stiens-Friesland.jpg",
       "https://i.ibb.co/WpPRZRnj/Stukadoor-gezocht-Prijs-Advies.jpg",
     ],
+    featured: true,
+    order: 50,
   },
 
   {
@@ -125,6 +139,8 @@ export const services: Service[] = [
       "https://i.ibb.co/cX8mM2FF/Project-Zandvoort.jpg",
       "https://i.ibb.co/bgzxpV2j/Wij-realiseren-uw-droom-badkamer-Designa-Architectuur.jpg",
     ],
+    featured: true,
+    order: 60,
   },
 
   {
@@ -139,6 +155,8 @@ export const services: Service[] = [
     ],
     img: "https://images.unsplash.com/photo-1615873968403-89e068629265?q=80&w=1600&auto=format&fit=crop",
     images: ["https://images.unsplash.com/photo-1615873968403-89e068629265?q=80&w=1600&auto=format&fit=crop"],
+    featured: false,
+    order: 110,
   },
 
   {
@@ -161,6 +179,8 @@ export const services: Service[] = [
       "https://i.ibb.co/cX8mM2FF/Project-Zandvoort.jpg",
       "https://i.ibb.co/bgzxpV2j/Wij-realiseren-uw-droom-badkamer-Designa-Architectuur.jpg",
     ],
+    featured: false,
+    order: 120,
   },
 
   {
@@ -179,9 +199,11 @@ export const services: Service[] = [
       "https://i.ibb.co/cSDWkscJ/ZARNESTI-HOUSE-AIM.jpg",
       "https://i.ibb.co/4wpQTchX/image.jpg",
     ],
+    featured: true,
+    order: 100,
   },
 
-  // ------------------ NEW SERVICES (as keys) ------------------
+  // ------------------ EXTRA SERVICES ------------------
 
   {
     slug: "sloopwerk",
@@ -199,6 +221,8 @@ export const services: Service[] = [
       "https://i.ibb.co/zhpQ12YG/renovatiesloopwerkzaamheden-binnenshuis.jpg",
       "https://i.ibb.co/BDwYSGj/sloopbedrijf-in-rotterdam-jpg.webp",
     ],
+    featured: false,
+    order: 130,
   },
 
   {
@@ -208,6 +232,8 @@ export const services: Service[] = [
     bulletsKeys: ["svc_b_raam_deur_1", "svc_b_raam_deur_2", "svc_b_raam_deur_3", "svc_b_raam_deur_4"],
     img: "https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?q=80&w=1600&auto=format&fit=crop",
     images: [],
+    featured: false,
+    order: 140,
   },
 
   {
@@ -217,6 +243,8 @@ export const services: Service[] = [
     bulletsKeys: ["svc_b_keuken_1", "svc_b_keuken_2", "svc_b_keuken_3", "svc_b_keuken_4"],
     img: "https://images.unsplash.com/photo-1556912167-f556f1f39df1?q=80&w=1600&auto=format&fit=crop",
     images: [],
+    featured: true,
+    order: 90,
   },
 
   {
@@ -226,6 +254,8 @@ export const services: Service[] = [
     bulletsKeys: ["svc_b_tuinmuur_1", "svc_b_tuinmuur_2", "svc_b_tuinmuur_3", "svc_b_tuinmuur_4"],
     img: "https://images.unsplash.com/photo-1595433707802-3c92bda4f7a4?q=80&w=1600&auto=format&fit=crop",
     images: [],
+    featured: false,
+    order: 150,
   },
 
   {
@@ -235,6 +265,8 @@ export const services: Service[] = [
     bulletsKeys: ["svc_b_kasten_1", "svc_b_kasten_2", "svc_b_kasten_3", "svc_b_kasten_4"],
     img: "https://images.unsplash.com/photo-1598300053545-d2b42bba0b88?q=80&w=1600&auto=format&fit=crop",
     images: [],
+    featured: false,
+    order: 160,
   },
 
   {
@@ -250,6 +282,8 @@ export const services: Service[] = [
       "https://i.ibb.co/PyF19Sr/4.jpg",
       "https://i.ibb.co/x88Q4CpM/hoofd-Loodgieterij.jpg",
     ],
+    featured: true,
+    order: 70,
   },
 
   {
@@ -259,6 +293,8 @@ export const services: Service[] = [
     bulletsKeys: ["svc_b_elektriciteit_1", "svc_b_elektriciteit_2", "svc_b_elektriciteit_3", "svc_b_elektriciteit_4"],
     img: "https://images.unsplash.com/photo-1581090700227-1e37b190418e?q=80&w=1600&auto=format&fit=crop",
     images: [],
+    featured: true,
+    order: 80,
   },
 
   {
@@ -270,12 +306,14 @@ export const services: Service[] = [
     images: [
       "https://i.ibb.co/j9D7dVNk/2.jpg",
       "https://i.ibb.co/mV03bNvh/Chique-hal-Den-Breejen-Interieur.jpg",
-      "https://i.ibb.co/DHRdyjpJ/Hallway-Black-white-wood.jpg",
+      "https://i.ibb.co/DHRdyjpJ/Hallway-Black_white-wood.jpg",
       "https://i.ibb.co/9M5YVQK/hoofd-Traprenovatie.jpg",
       "https://i.ibb.co/FLnCHtNR/Opentrap.jpg",
       "https://i.ibb.co/CKS9jpcP/Trap-gestoffeerd-met-Cunera-Schaft-sisal-tapijt-in-visgraat.jpg",
       "https://i.ibb.co/Z1JxMmxf/Traprenovatie-met-PVC-trapbekleding-Vloeren-Trappen.jpg",
     ],
+    featured: false,
+    order: 170,
   },
 
   {
@@ -292,5 +330,7 @@ export const services: Service[] = [
       "https://i.ibb.co/Rp3YX4hB/Moderne-tweewoonst-B-B.jpg",
       "https://i.ibb.co/KBmpgk7/Mossoux-Architecten.jpg",
     ],
+    featured: false,
+    order: 180,
   },
 ];

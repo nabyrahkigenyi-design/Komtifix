@@ -1,42 +1,37 @@
+// src/components/SEO.tsx
 "use client";
 
 import Script from "next/script";
 import { services } from "@/lib/services";
 import { useI18n } from "@/lib/i18n";
+import { brand } from "@/lib/brand";
 
-// --- Klusdam Site Details ---
-const site = {
-  name: "Klusdam",
-  url: "https://klusdam.nl",
-  phone: "+31 6 34099060",
-  street: "Von Leibnizstraat 23 a",
-  postal: "3112 XN",
-  city: "Schiedam",
-  country: "NL",
-};
+function phoneDigits(phone: string) {
+  // For wa.me links: digits only, keep leading country code if present
+  return phone.replace(/[^0-9]/g, "");
+}
 
 // --- Local Business JSON-LD ---
 export function LocalBusinessJSON() {
   const data = {
     "@context": "https://schema.org",
     "@type": "LocalBusiness",
-    name: site.name,
-    url: site.url,
-    telephone: site.phone,
+    name: brand.name,
+    url: brand.url,
+    telephone: brand.phone, // keep as human-readable
     address: {
       "@type": "PostalAddress",
-      streetAddress: site.street,
-      postalCode: site.postal,
-      addressLocality: site.city,
-      addressCountry: "NL",
+      streetAddress: brand.address,
+      addressLocality: brand.location.city,
+      addressRegion: brand.location.region,
+      addressCountry: brand.location.country,
     },
-    areaServed: ["Schiedam", "Rotterdam", "Vlaardingen", "Maassluis"],
-    image: [`${site.url}/og.jpg`],
+    // Use nearby areas to support local SEO
+    areaServed: ["Leidschendam", "Voorburg", "Den Haag", "Wassenaar", "Rijswijk"],
+    image: [`${brand.url}/og.jpg`],
     sameAs: [
-      "https://www.facebook.com/",
-      "https://www.instagram.com/",
-      "https://www.linkedin.com/",
-      `https://wa.me/${site.phone.replace(/[^0-9]/g, "")}`,
+      // Replace with real profiles when available; ok to keep empty later
+      `https://wa.me/${phoneDigits(brand.phone)}`,
     ],
     openingHoursSpecification: [
       {
@@ -51,12 +46,7 @@ export function LocalBusinessJSON() {
         opens: "09:00",
         closes: "16:00",
       },
-      {
-        "@type": "OpeningHoursSpecification",
-        dayOfWeek: "Sunday",
-        opens: "00:00",
-        closes: "00:00",
-      },
+      // If closed Sundays, omit Sunday entirely (cleaner for schema)
     ],
   };
 
@@ -67,14 +57,14 @@ export function LocalBusinessJSON() {
   );
 }
 
-// --- Service JSON-LD (NO FAQ because Service type has no faq fields) ---
+// --- Service JSON-LD (no FAQ because Service type has no faq fields) ---
 export function ServiceJSON({ slug }: { slug: string }) {
   const { t } = useI18n();
 
   const svc = services.find((s) => s.slug === slug);
   if (!svc) return null;
 
-  const title = t(svc.titleKey) || site.name;
+  const title = t(svc.titleKey) || brand.name;
   const excerpt = t(svc.excerptKey) || "";
 
   const data = {
@@ -85,12 +75,12 @@ export function ServiceJSON({ slug }: { slug: string }) {
     description: excerpt,
     provider: {
       "@type": "LocalBusiness",
-      name: site.name,
-      telephone: site.phone,
-      url: site.url,
+      name: brand.name,
+      telephone: brand.phone,
+      url: brand.url,
     },
-    areaServed: "Schiedam en regio Rotterdam",
-    url: `${site.url}/diensten/${svc.slug}`,
+    areaServed: `${brand.location.city} en regio Den Haag`,
+    url: `${brand.url}/diensten/${svc.slug}`,
     image: svc.images?.length ? svc.images : [svc.img],
     offers: {
       "@type": "Offer",

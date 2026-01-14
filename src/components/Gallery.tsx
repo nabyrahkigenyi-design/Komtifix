@@ -41,9 +41,6 @@ export default function Gallery() {
   const pathname = usePathname();
   const params = useSearchParams();
 
-  // IMPORTANT:
-  // URLSearchParams.get() already returns decoded values.
-  // Do NOT decodeURIComponent here; it can throw on malformed sequences.
   const catFromUrl = (params.get("cat") || "") as CategoryKey;
   const initialCat: CatFilter = PROJECT_CATEGORIES.includes(catFromUrl) ? catFromUrl : ALL;
 
@@ -54,7 +51,7 @@ export default function Gallery() {
   useEffect(() => {
     const next = new URLSearchParams(params.toString());
     if (category === ALL) next.delete("cat");
-    else next.set("cat", category); // no encodeURIComponent; URLSearchParams will encode safely
+    else next.set("cat", category);
     router.replace(`${pathname}?${next.toString()}`, { scroll: false });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [category]);
@@ -77,7 +74,6 @@ export default function Gallery() {
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
-
     return allImageItems.filter((it) => {
       const byCat = category === ALL ? true : it.categoryKey === category;
       const byQ = !q || t(it.titleKey).toLowerCase().includes(q);
@@ -108,8 +104,8 @@ export default function Gallery() {
   // swipe (when zoom=1)
   const swipeStart = useRef<{ x: number; y: number; t: number } | null>(null);
 
-  // used to limit pan at zoom>1
-  const boxRef = useRef<HTMLDivElement>(null);
+  // stage used for pan limits
+  const stageRef = useRef<HTMLDivElement>(null);
 
   function resetTransform() {
     setZoom(1);
@@ -141,13 +137,12 @@ export default function Gallery() {
 
   // lock body scroll when open
   useEffect(() => {
-    if (open) {
-      const prevOverflow = document.body.style.overflow;
-      document.body.style.overflow = "hidden";
-      return () => {
-        document.body.style.overflow = prevOverflow;
-      };
-    }
+    if (!open) return;
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = prevOverflow;
+    };
   }, [open]);
 
   // keyboard
@@ -167,11 +162,11 @@ export default function Gallery() {
     return Math.max(min, Math.min(max, n));
   }
   function limitX(z: number) {
-    const w = boxRef.current?.clientWidth ?? 1000;
+    const w = stageRef.current?.clientWidth ?? 1000;
     return (w * (z - 1)) / 2;
   }
   function limitY(z: number) {
-    const h = boxRef.current?.clientHeight ?? 800;
+    const h = stageRef.current?.clientHeight ?? 800;
     return (h * (z - 1)) / 2;
   }
   function clampOffset(x: number, y: number, z: number) {
@@ -204,7 +199,6 @@ export default function Gallery() {
   }
 
   // Only zoom with wheel when already zoomed in.
-  // Otherwise allow normal scroll to view tall images.
   function onWheel(e: React.WheelEvent) {
     if (!open) return;
     if (zoom === 1) return;
@@ -275,7 +269,7 @@ export default function Gallery() {
       return;
     }
 
-    // drag when zoomed; when zoom===1, allow native vertical scroll
+    // drag when zoomed
     if (!dragging.current || e.touches.length !== 1 || zoom === 1) return;
 
     e.preventDefault();
@@ -378,10 +372,10 @@ export default function Gallery() {
         </div>
       </div>
 
-      {/* SCROLLABLE LIGHTBOX */}
+      {/* LIGHTBOX */}
       {open && filtered.length > 0 && (
         <div
-          className="fixed inset-0 z-[9999] bg-black overflow-y-auto"
+          className="fixed inset-0 z-[9999] bg-black"
           style={{ touchAction: zoom === 1 ? "pan-y" : "none" }}
           onClick={close}
           onWheel={onWheel}
@@ -431,38 +425,44 @@ export default function Gallery() {
               <button
                 type="button"
                 className="text-sm px-3 py-1.5 rounded bg-white/10 hover:bg-white/20"
-                onClick={() => resetTransform()}
+                onClick={resetTransform}
               >
                 Reset
               </button>
             </div>
           </div>
 
-          {/* scrollable viewport */}
+          {/* stage (fit-to-screen) */}
           <div
-            ref={boxRef}
-            className="px-4 py-6 md:px-10 flex justify-center"
+            ref={stageRef}
+            className="relative w-[96vw] h-[86vh] max-w-[1400px] mx-auto my-6 flex items-center justify-center overflow-hidden px-4"
             onClick={(e) => {
               e.stopPropagation();
               setShowUI((v) => !v);
             }}
           >
-            <img
-              src={filtered[index].src}
-              alt={t(filtered[index].titleKey)}
-              className="select-none w-full h-auto max-w-[1200px]"
-              draggable={false}
+            {/* transform wrapper */}
+            <div
               style={
                 zoom === 1
-                  ? { transform: "none", transition: "none", cursor: "zoom-in" }
+                  ? { transform: "none" }
                   : {
                       transform: `translate(${offset.x}px, ${offset.y}px) scale(${zoom})`,
                       transformOrigin: "center",
                       transition: dragging.current || pinchStartDist.current ? "none" : "transform 120ms ease",
-                      cursor: "grab",
                     }
               }
-            />
+            >
+              {/* IMPORTANT: do NOT force w-full; keep natural size and only shrink */}
+              <img
+                key={filtered[index].src}
+                src={filtered[index].src}
+                alt={t(filtered[index].titleKey)}
+                draggable={false}
+                className="select-none w-auto h-auto max-w-[96vw] max-h-[86vh] object-contain"
+                style={{ cursor: zoom > 1 ? "grab" : "zoom-in" }}
+              />
+            </div>
           </div>
 
           <div

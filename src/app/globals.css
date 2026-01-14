@@ -1,48 +1,213 @@
+/* src/app/globals.css */
 @import "tailwindcss";
 
-/* Theme tokens */
+/* =========================
+   Komtifix — Premium Vibrant Theme
+   - Modern neutrals + teal/emerald accents
+   - Glassmorphism utilities
+   - Motion-safe reveal
+   ========================= */
+
+/* Theme tokens (Tailwind v4 @theme) */
 @theme {
-  --color-bronze: #b08d57;
-  --color-charcoal: #2a2a2a;
-  --color-tan: #d2b48c;
-  --color-cream: #f8f5ef;
+  /* Core neutrals */
+  --color-ink: #0b1220;          /* near-black with blue depth */
+  --color-charcoal: #141a24;     /* dark neutral */
+  --color-slate: #2a3342;        /* mid text */
+  --color-mist: #e9edf2;         /* light surface */
+  --color-ivory: #f7f5f0;        /* warm background */
+
+  /* Brand accents (vibrant but premium) */
+  --color-teal: #0ea5a4;         /* primary */
+  --color-emerald: #10b981;      /* secondary */
+  --color-amber: #f59e0b;        /* small highlights for CTAs/badges */
+
+  /* Borders / rings */
+  --color-line: rgba(255, 255, 255, 0.10);
+  --color-line-strong: rgba(255, 255, 255, 0.18);
+
+  /* Shadows (used by utilities below) */
+  --shadow-soft: 0 10px 30px rgba(0, 0, 0, 0.18);
+  --shadow-glow: 0 0 0 1px rgba(255, 255, 255, 0.10), 0 18px 45px rgba(0, 0, 0, 0.35);
 }
 
-/* Fades for hero/panels */
-.fade-dark  { background: linear-gradient(90deg, rgba(42,42,42,.92) 0%, rgba(42,42,42,.7) 55%, rgba(42,42,42,0) 100%); }
-.fade-light { background: linear-gradient(90deg, rgba(248,245,239,.95) 0%, rgba(248,245,239,.75) 55%, rgba(248,245,239,0) 100%); }
+/* Base */
+html,
+body {
+  height: 100%;
+}
 
-/* Marquee */
-.marquee { position: relative; overflow: hidden; }
-.marquee ul { display: flex; gap: 2rem; white-space: nowrap; animation: marq 18s linear infinite; }
-@keyframes marq { from { transform: translateX(0) } to { transform: translateX(-50%) } }
+body {
+  /* Keep your layout.tsx classes, but ensure solid defaults */
+  background: var(--color-ivory);
+  color: var(--color-charcoal);
+  text-rendering: optimizeLegibility;
+}
 
-/* Tool/house background pattern (light, subtle) */
+/* Typography helpers (fonts are set via next/font in layout.tsx) */
+.font-sans {
+  font-family: var(--font-sans), ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial,
+    "Apple Color Emoji", "Segoe UI Emoji";
+}
+
+.font-serif {
+  font-family: var(--font-serif), ui-serif, Georgia, "Times New Roman", Times, serif;
+}
+
+/* =========================
+   Premium backgrounds
+   ========================= */
+
+/* Subtle premium gradient background for sections */
+.bg-premium {
+  background:
+    radial-gradient(1200px 600px at 10% -10%, rgba(14, 165, 164, 0.18), transparent 60%),
+    radial-gradient(900px 500px at 85% 0%, rgba(16, 185, 129, 0.14), transparent 55%),
+    radial-gradient(900px 600px at 60% 120%, rgba(245, 158, 11, 0.10), transparent 55%),
+    linear-gradient(180deg, var(--color-ivory), #ffffff 65%, var(--color-ivory));
+}
+
+/* Hero/panel fades */
+.fade-dark {
+  background: linear-gradient(
+    90deg,
+    rgba(11, 18, 32, 0.92) 0%,
+    rgba(11, 18, 32, 0.70) 55%,
+    rgba(11, 18, 32, 0) 100%
+  );
+}
+
+.fade-light {
+  background: linear-gradient(
+    90deg,
+    rgba(247, 245, 240, 0.95) 0%,
+    rgba(247, 245, 240, 0.75) 55%,
+    rgba(247, 245, 240, 0) 100%
+  );
+}
+
+/* =========================
+   Glassmorphism utilities
+   ========================= */
+
+/* Glass panel base */
+.glass {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--color-line);
+  box-shadow: var(--shadow-soft);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+/* Glass on light background */
+.glass-light {
+  background: rgba(255, 255, 255, 0.65);
+  border: 1px solid rgba(11, 18, 32, 0.10);
+  box-shadow: 0 10px 30px rgba(11, 18, 32, 0.10);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+/* Gradient border effect (use on cards/buttons) */
+.glass-border {
+  position: relative;
+}
+.glass-border::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(
+    90deg,
+    rgba(14, 165, 164, 0.55),
+    rgba(16, 185, 129, 0.45),
+    rgba(245, 158, 11, 0.35)
+  );
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+/* Premium button glow on hover (apply with group-hover) */
+.hover-glow {
+  transition: transform 200ms ease, box-shadow 200ms ease;
+}
+.hover-glow:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-glow);
+}
+
+/* =========================
+   Patterns (subtle)
+   ========================= */
+
+/* Light subtle dot-grid */
 .pattern-tools {
-  --bg: var(--color-cream);
-  --fg: rgba(0,0,0,.04);
+  --bg: var(--color-ivory);
+  --fg: rgba(11, 18, 32, 0.05);
   background:
     radial-gradient(circle at 20px 20px, var(--fg) 2px, transparent 2px),
     radial-gradient(circle at 60px 60px, var(--fg) 2px, transparent 2px),
-    linear-gradient(90deg, transparent 49%, rgba(0,0,0,.03) 50%, transparent 51%),
-    linear-gradient(transparent 49%, rgba(0,0,0,.03) 50%, transparent 51%);
+    linear-gradient(90deg, transparent 49%, rgba(11, 18, 32, 0.03) 50%, transparent 51%),
+    linear-gradient(transparent 49%, rgba(11, 18, 32, 0.03) 50%, transparent 51%);
   background-size: 80px 80px, 80px 80px, 40px 40px, 40px 40px;
   background-position: 0 0, 0 0, 0 0, 0 0;
   background-color: var(--bg);
 }
 
-/* Footer background faint icons (SVG data URI) */
+/* Footer faint icons (keep, but slightly more premium opacity) */
 .footer-pattern {
-  background-image: url("data:image/svg+xml,%3Csvg width='120' height='120' viewBox='0 0 120 120' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M20 10h20v6H20z'/%3E%3Ccircle cx='80' cy='20' r='6'/%3E%3Crect x='10' y='80' width='14' height='14' rx='2'/%3E%3Cpath d='M90 90l15 15' stroke='%23ffffff' stroke-opacity='0.05'/%3E%3C/g%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg width='120' height='120' viewBox='0 0 120 120' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ffffff' fill-opacity='0.06'%3E%3Cpath d='M20 10h20v6H20z'/%3E%3Ccircle cx='80' cy='20' r='6'/%3E%3Crect x='10' y='80' width='14' height='14' rx='2'/%3E%3Cpath d='M90 90l15 15' stroke='%23ffffff' stroke-opacity='0.06'/%3E%3C/g%3E%3C/svg%3E");
   background-size: 240px 240px;
 }
 
-/* Scroll reveal */
-[data-reveal] { opacity: 0; transform: translateY(24px); transition: opacity .6s ease, transform .6s ease; }
-[data-reveal].is-visible { opacity: 1; transform: translateY(0); }
-/* Focus styles for a11y */
-:focus-visible {
-  outline: 2px solid theme(colors.bronze);
-  outline-offset: 2px;
+/* =========================
+   Marquee
+   ========================= */
+.marquee {
+  position: relative;
+  overflow: hidden;
+}
+.marquee ul {
+  display: flex;
+  gap: 2rem;
+  white-space: nowrap;
+  animation: marq 18s linear infinite;
+}
+@keyframes marq {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
 }
 
+/* =========================
+   Scroll reveal (motion-safe)
+   ========================= */
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal] {
+    transition: none !important;
+    transform: none !important;
+    opacity: 1 !important;
+  }
+}
+
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+[data-reveal].is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Focus styles (a11y) */
+:focus-visible {
+  outline: 2px solid var(--color-teal);
+  outline-offset: 2px;
+}

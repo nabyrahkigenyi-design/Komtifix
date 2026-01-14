@@ -1,7 +1,9 @@
+// src/components/Projects.tsx
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
+import { createPortal } from "react-dom";
 import BlurImage from "./BlurImage";
 import { projects } from "@/lib/projects";
 import { useI18n } from "@/lib/i18n";
@@ -39,8 +41,11 @@ export default function Projects() {
   const pinchCenter = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
 
   const swipeStart = useRef<{ x: number; y: number; t: number } | null>(null);
-
   const boxRef = useRef<HTMLDivElement>(null);
+
+  // Portal mount guard
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
 
   function resetTransform() {
     setZoom(1);
@@ -48,7 +53,8 @@ export default function Projects() {
   }
 
   function openAt(i: number) {
-    setIndex(i);
+    const safe = Math.max(0, Math.min(i, Math.max(0, items.length - 1)));
+    setIndex(safe);
     setShowUI(true);
     resetTransform();
     setOpen(true);
@@ -56,15 +62,19 @@ export default function Projects() {
 
   function close() {
     setOpen(false);
+    dragging.current = false;
+    pinchStartDist.current = null;
   }
 
   function next() {
+    if (!items.length) return;
     setIndex((v) => (v + 1) % items.length);
     setShowUI(true);
     resetTransform();
   }
 
   function prev() {
+    if (!items.length) return;
     setIndex((v) => (v - 1 + items.length) % items.length);
     setShowUI(true);
     resetTransform();
@@ -99,15 +109,24 @@ export default function Projects() {
     });
   }
 
+  // Keep index safe if items change
+  useEffect(() => {
+    if (!items.length) {
+      setIndex(0);
+      if (open) setOpen(false);
+      return;
+    }
+    setIndex((v) => Math.max(0, Math.min(v, items.length - 1)));
+  }, [items.length, open]);
+
   // lock body scroll
   useEffect(() => {
-    if (open) {
-      const prev = document.body.style.overflow;
-      document.body.style.overflow = "hidden";
-      return () => {
-        document.body.style.overflow = prev;
-      };
-    }
+    if (!open) return;
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = prevOverflow;
+    };
   }, [open]);
 
   // keyboard
@@ -120,6 +139,7 @@ export default function Projects() {
     };
     document.addEventListener("keydown", onKey);
     return () => document.removeEventListener("keydown", onKey);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open, items.length]);
 
   // Mouse
@@ -143,6 +163,7 @@ export default function Projects() {
 
   function onWheel(e: React.WheelEvent) {
     if (!open) return;
+    e.preventDefault();
     const delta = -e.deltaY * 0.0015;
     setZoom((z) => {
       const nz = clamp(z + delta, 1, 4);
@@ -190,7 +211,6 @@ export default function Projects() {
   function onTouchMove(e: React.TouchEvent) {
     if (e.touches.length === 2 && pinchStartDist.current) {
       e.preventDefault();
-
       const [t1, t2] = [e.touches[0], e.touches[1]];
       const dist = getDistance(t1, t2);
 
@@ -212,10 +232,10 @@ export default function Projects() {
     if (!dragging.current || e.touches.length !== 1 || zoom === 1) return;
     e.preventDefault();
 
-    const t = e.touches[0];
-    const dx = t.clientX - lastPos.current.x;
-    const dy = t.clientY - lastPos.current.y;
-    lastPos.current = { x: t.clientX, y: t.clientY };
+    const tt = e.touches[0];
+    const dx = tt.clientX - lastPos.current.x;
+    const dy = tt.clientY - lastPos.current.y;
+    lastPos.current = { x: tt.clientX, y: tt.clientY };
     setOffset((o) => clampOffset(o.x + dx, o.y + dy, zoom));
   }
 
@@ -223,7 +243,6 @@ export default function Projects() {
     dragging.current = false;
     pinchStartDist.current = null;
 
-    // swipe navigation only when not zoomed
     if (zoom === 1 && swipeStart.current) {
       const start = swipeStart.current;
       const endT = Date.now() - start.t;
@@ -239,9 +258,108 @@ export default function Projects() {
         else prev();
       }
     }
-
     swipeStart.current = null;
   }
+
+  const current = items[index];
+
+  const lightbox =
+    open && current ? (
+      <div
+        className="fixed inset-0 z-[9999] bg-black overscroll-contain"
+        style={{
+          width: "100dvw",
+          height: "100dvh",
+          touchAction: "none",
+        }}
+        onWheel={onWheel}
+        onDoubleClick={toggleZoom}
+        onTouchStart={onTouchStart}
+        onTouchMove={onTouchMove}
+        onTouchEnd={onTouchEnd}
+        onMouseDown={onMouseDown}
+        onMouseMove={onMouseMove}
+        onMouseUp={onMouseUp}
+        onMouseLeave={onMouseUp}
+      >
+        {/* top bar */}
+        <div
+          className={`absolute left-0 right-0 top-0 z-20 p-3 flex items-center justify-between text-white transition-opacity ${
+            showUI ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
+          }`}
+          onClick={(e) => e.stopPropagation()}
+        >
+          <button
+            type="button"
+            className="text-xl px-3 py-1.5 rounded bg-white/10 hover:bg-white/20"
+            onClick={close}
+          >
+            ✕
+          </button>
+
+          <div className="text-sm bg-white/10 px-3 py-1 rounded">
+            {index + 1} / {items.length}
+          </div>
+
+          <div className="flex gap-2">
+            <button
+              type="button"
+              className="text-sm px-3 py-1.5 rounded bg-white/10 hover:bg-white/20"
+              onClick={prev}
+            >
+              ‹ {t("prev")}
+            </button>
+            <button
+              type="button"
+              className="text-sm px-3 py-1.5 rounded bg-white/10 hover:bg-white/20"
+              onClick={next}
+            >
+              {t("next")} ›
+            </button>
+            <button
+              type="button"
+              className="text-sm px-3 py-1.5 rounded bg-white/10 hover:bg-white/20"
+              onClick={() => resetTransform()}
+            >
+              {t("reset")}
+            </button>
+          </div>
+        </div>
+
+        {/* viewport + image */}
+        <div
+  ref={boxRef}
+  className="absolute inset-0 flex items-center justify-center p-3"
+  onClick={() => setShowUI((v) => !v)}
+>
+
+          <img
+  key={current.src}
+  src={current.src}
+  alt={current.title}
+  draggable={false}
+  className="select-none max-w-full max-h-full w-auto h-auto object-contain"
+  style={
+    zoom === 1
+      ? { transform: "none", transition: "none", cursor: "zoom-in" }
+      : {
+          transform: `translate(${offset.x}px, ${offset.y}px) scale(${zoom})`,
+          transformOrigin: "center",
+          transition: dragging.current || pinchStartDist.current ? "none" : "transform 120ms ease",
+          cursor: "grab",
+        }
+  }
+/>
+
+        </div>
+
+        <div
+          className={`pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-black/60 to-transparent transition-opacity ${
+            showUI ? "opacity-100" : "opacity-0"
+          }`}
+        />
+      </div>
+    ) : null;
 
   return (
     <section className="py-16 md:py-20 bg-white" data-reveal>
@@ -283,95 +401,8 @@ export default function Projects() {
         </div>
       </div>
 
-      {/* FULLSCREEN LIGHTBOX */}
-      {open && items.length > 0 && (
-        <div
-          className="fixed inset-0 z-50 bg-black"
-          style={{ touchAction: "none" }}
-          onWheel={onWheel}
-          onDoubleClick={toggleZoom}
-          onTouchStart={onTouchStart}
-          onTouchMove={onTouchMove}
-          onTouchEnd={onTouchEnd}
-          onMouseDown={onMouseDown}
-          onMouseMove={onMouseMove}
-          onMouseUp={onMouseUp}
-        >
-          {/* top bar */}
-          <div
-            className={`absolute left-0 right-0 top-0 z-20 p-3 flex items-center justify-between text-white transition-opacity ${
-              showUI ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
-            }`}
-            onClick={(e) => e.stopPropagation()}
-          >
-            <button
-              type="button"
-              className="text-xl px-3 py-1.5 rounded bg-white/10 hover:bg-white/20"
-              onClick={close}
-            >
-              ✕
-            </button>
-
-            <div className="text-sm bg-white/10 px-3 py-1 rounded">
-              {index + 1} / {items.length}
-            </div>
-
-            <div className="flex gap-2">
-              <button
-                type="button"
-                className="text-sm px-3 py-1.5 rounded bg-white/10 hover:bg-white/20"
-                onClick={prev}
-              >
-                ‹ Prev
-              </button>
-              <button
-                type="button"
-                className="text-sm px-3 py-1.5 rounded bg-white/10 hover:bg-white/20"
-                onClick={next}
-              >
-                Next ›
-              </button>
-              <button
-                type="button"
-                className="text-sm px-3 py-1.5 rounded bg-white/10 hover:bg-white/20"
-                onClick={() => resetTransform()}
-              >
-                Reset
-              </button>
-            </div>
-          </div>
-
-          {/* viewport + image */}
-          <div
-            ref={boxRef}
-            className="absolute inset-0 flex items-center justify-center"
-            onClick={() => setShowUI((v) => !v)}
-          >
-            <img
-              src={items[index].src}
-              alt={items[index].title}
-              className="select-none w-full h-full object-contain"
-              draggable={false}
-              style={
-                zoom === 1
-                  ? { transform: "none", transition: "none", cursor: "zoom-in" }
-                  : {
-                      transform: `translate(${offset.x}px, ${offset.y}px) scale(${zoom})`,
-                      transformOrigin: "center",
-                      transition: dragging.current || pinchStartDist.current ? "none" : "transform 120ms ease",
-                      cursor: "grab",
-                    }
-              }
-            />
-          </div>
-
-          <div
-            className={`pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-black/60 to-transparent transition-opacity ${
-              showUI ? "opacity-100" : "opacity-0"
-            }`}
-          />
-        </div>
-      )}
+      {/* Portal lightbox (fixes “fixed inside transformed parent” bugs) */}
+      {mounted && lightbox ? createPortal(lightbox, document.body) : null}
     </section>
   );
 }

@@ -1,11 +1,13 @@
+// src/app/contact/page.tsx
 import PreHeader from "@/components/PreHeader";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ContactForm from "@/components/ContactForm";
 import ScrollReveal from "@/components/ScrollReveal";
+import { brand } from "@/lib/brand";
 
 export const metadata = {
-  title: "Contact • Klusdam",
+  title: `Contact • ${brand.name}`,
 };
 
 const hours = [
@@ -18,12 +20,22 @@ const hours = [
   { d: "Zondag", t: "Gesloten" },
 ];
 
+function telHref(phone: string) {
+  const cleaned = phone.trim();
+  return cleaned.startsWith("tel:") ? cleaned : `tel:${cleaned.replace(/\s+/g, "")}`;
+}
+
+function mapSrcFromAddress(address: string) {
+  return `https://www.google.com/maps?q=${encodeURIComponent(address)}&output=embed`;
+}
+
 export default function Page() {
   return (
     <>
       <ScrollReveal />
       <PreHeader />
       <Navbar />
+
       <main className="mx-auto max-w-7xl px-4 py-12">
         <h1 className="text-3xl md:text-4xl font-extrabold">Contact</h1>
 
@@ -38,25 +50,42 @@ export default function Page() {
             </div>
 
             <div className="bg-white rounded-xl p-0 overflow-hidden border border-black/10">
-              {/* Google Maps embed (address centered) */}
               <iframe
-                title="Klusdam kaart"
+                title={`${brand.name} kaart`}
                 width="100%"
                 height="380"
                 style={{ border: 0 }}
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"
-                src={`https://www.google.com/maps?q=Von%20Leibnizstraat%2023a%2C%203112%20XN%20Schiedam&output=embed`}
+                src={mapSrcFromAddress(brand.address)}
               />
             </div>
           </div>
 
           <aside className="bg-white rounded-xl p-6 border border-black/10">
             <h2 className="text-xl font-bold">Gegevens</h2>
+
             <div className="mt-3 space-y-2 text-sm">
-              <p><b>Adres:</b><br/>Von Leibnizstraat 23 a<br/>3112 XN Schiedam</p>
-              <p><b>Telefoon:</b> <a className="underline" href="tel:+31634099060">06 34099060</a></p>
-              <p><b>E-mail:</b> <a className="underline" href="mailto:info@klusdam.nl">info@klusdam.nl</a></p>
+              <p>
+                <b>Adres:</b>
+                <br />
+                {brand.address}
+              </p>
+
+              <p>
+                <b>Telefoon:</b>{" "}
+                <a className="underline" href={telHref(brand.phone)}>
+                  {brand.phone}
+                </a>
+              </p>
+
+              {/* Keep email centralized via env; if you want it in brand later, we can add it */}
+              <p>
+                <b>E-mail:</b>{" "}
+                <a className="underline" href="mailto:info@komtifix.nl">
+                  info@komtifix.nl
+                </a>
+              </p>
             </div>
 
             <h3 className="mt-6 font-semibold">Openingstijden</h3>
@@ -71,6 +100,7 @@ export default function Page() {
           </aside>
         </div>
       </main>
+
       <Footer />
     </>
   );

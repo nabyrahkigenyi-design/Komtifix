@@ -20,14 +20,14 @@ const dict: Record<Lang, Record<string, string>> = {
     contact: "Contact",
     cta_quote: "Vrijblijvende offerte",
     call_now: "Bel direct",
-    hero_h: "Bouw, renovatie en afbouw in Schiedam",
+    hero_h: "Handyman & onderhoud in Leidschendam",
     hero_p:
-      "Laminaat, badkamers, plavuizen, schilderwerk, stukadoor, tegelzetter, vloerverwarming, WC renovatie en timmerwerk. Eén aanspreekpunt, vakwerk gegarandeerd.",
-    view_options: "Bekijk onze mogelijkheden",
+  "Komtifix helpt met onderhoud en renovatie: schilderwerk, timmerwerk, sanitair, tegels, vloeren en kleine verbouwingen. Snel, netjes en betrouwbaar.",
+    view_options:  "Bekijk onze diensten",
     read_more: "Lees meer",
     all_services: "Alle diensten",
     recent_projects: "Recente projecten",
-    reviews_h: "Wat onze klanten zeggen",
+    reviews_h: "Ervaringen van klanten",
     open_menu: "Menu openen",
 
 
@@ -45,20 +45,17 @@ contact_send_error: "Verzenden mislukt. Probeer het opnieuw of bel ons.",
 
 
     /* PreHeader */
-    ph_trust: "Vakkundig & betrouwbaar",
-    ph_region: "Schiedam en regio Rotterdam",
-    ph_services: "Badkamer • Tegelzetter • Stukadoor • Timmerwerk",
-    ph_floorheat: "Vloerverwarming & plavuizen",
-    ph_paint: "Schilderwerk binnen en buiten",
+ph_trust: "Netjes, snel & betrouwbaar",
+ph_region: "Leidschendam en omgeving",
+ph_services: "Onderhoud • Renovatie • Timmerwerk • Sanitair",
+ph_floorheat: "Vloeren & (vloer)verwarming",
+ph_paint: "Schilderwerk binnen en buiten",
 
     /* Footer */
-    footer_intro: "Allround bouw & renovatie in Schiedam en regio Rotterdam.",
-    footer_follow: "Volg ons",
-    footer_company: "Bedrijf",
-    footer_contact: "Contact",
-    footer_address_line1: "Von Leibnizstraat 23 a",
-    footer_address_line2: "3112 XN Schiedam",
-    footer_rights: "Klusdam. Alle rechten voorbehouden.",
+footer_intro: "Komtifix: handyman & onderhoud in Leidschendam en omgeving.",
+footer_address_line1: "Pr. Annalaan 343",
+footer_address_line2: "2263 XK Leidschendam",
+footer_rights: "Komtifix. Alle rechten voorbehouden.",
 
     /* Footer service labels (kept for compatibility) */
     svc_laminaat: "Laminaat laten leggen",
@@ -251,16 +248,18 @@ contact_send_error: "Verzenden mislukt. Probeer het opnieuw of bel ons.",
     source_werkspot: "Werkspot",
     go_to_review: "Ga naar review",
 
-    review_1: "Super strak tegelwerk in onze badkamer. Heldere communicatie en alles binnen planning. Aanrader!",
-    review_2: "Vloerverwarming en plavuizen laten leggen. Netjes gewerkt en duidelijke offerte. Heel tevreden.",
-    review_3: "Snel en professioneel. Laminaat en plinten perfect afgewerkt. Dankjewel!",
-    review_4: "Stucwerk en schilderwerk boven verwachting. Zeer netjes opgeleverd.",
+    /* Reviews (optioneel, maar voorkomt “Schiedam/Rotterdam” overal) */
+review_1: "Net werk geleverd en duidelijke afspraken. Alles liep soepel. Aanrader!",
+review_2: "Snelle reactie en nette uitvoering. Offerte was helder en zonder verrassingen.",
+review_3: "Professioneel en vriendelijk. Afwerking was strak en precies.",
+review_4: "Topservice: netjes gewerkt, goede communicatie en mooi resultaat.",
 
-    why_klusdam: "Waarom kiezen voor Klusdam",
-why_b_1: "Premium materialen en A-merk gereedschap voor duurzaam resultaat.",
-why_b_2: "Heldere offertes en planning. Geen verrassingen achteraf.",
-why_b_3: "Netjes werken: afdekking, stofbeperking en dagelijks schoon.",
-why_b_4: "Lokale vakmensen met jaren ervaring in Schiedam en regio Rotterdam.",
+    /* Why choose (key stays the same, value becomes Komtifix) */
+why_brand: "Waarom kiezen voor Komtifix",
+why_b_1: "Netjes vakwerk met duurzame materialen.",
+why_b_2: "Heldere afspraken en een duidelijke planning.",
+why_b_3: "Schoon werken: afdekken, stof beperken en netjes opleveren.",
+why_b_4: "Lokaal actief in Leidschendam en omgeving.",
 
 examples_work: "Voorbeelden van ons werk",
 open_image: "Open afbeelding",
@@ -273,24 +272,24 @@ prev: "Vorige",
 next: "Volgende",
 reset: "Reset",
 
+/* Contact inline block */
 contact_inline_intro:
   "Vul je gegevens in. Je ontvangt een bevestiging per e-mail en we nemen snel contact met je op.",
 contact_address: "Adres",
 contact_phone: "Telefoon",
 contact_email_label: "E-mail",
 
-over_title: "Klusdam in Schiedam",
+/* Over page */
+over_title: "Komtifix in Leidschendam",
 over_intro:
-  "Woningrenovatie zonder stress. Wij plannen, coördineren en leveren op met garantie. Eén team voor sloop, leidingwerk, tegel- en timmerwerk, stuken en schilderen.",
-over_bullet_1:
-  "Afspraak = afspraak. Strakke planning en vaste contactpersoon.",
-over_bullet_2:
-  "Netjes werken: stofbeperking, afdekking en elke dag opgeruimd.",
-over_bullet_3:
-  "Duurzame materialen en vakmanschap dat jaren mooi blijft.",
+  "Onderhoud en renovatie zonder stress. Wij plannen, coördineren en leveren netjes op. Eén team voor sloop, leidingwerk, tegel- en timmerwerk, stuken en schilderen.",
+over_bullet_1: "Afspraak = afspraak. Duidelijke planning en één contactpersoon.",
+over_bullet_2: "Netjes werken: afdekken, stof beperken en elke dag opgeruimd.",
+over_bullet_3: "Duurzame materialen en afwerking die lang mooi blijft.",
 over_location:
-  "Standplaats: Von Leibnizstraat 23 a, 3112 XN Schiedam. Werkgebied: Schiedam, Rotterdam, Vlaardingen, Delft en omgeving.",
-over_image_alt: "Klusdam team aan het werk",
+  "Standplaats: Pr. Annalaan 343, 2263 XK Leidschendam. Werkgebied: Leidschendam, Voorburg, Den Haag en omgeving.",
+over_image_alt: "Komtifix team aan het werk",
+
 
 cat_badkamers: "Badkamers",
 cat_vloeren: "Vloeren",
@@ -337,9 +336,9 @@ tag_trap: "trap",
     contact: "Contact",
     cta_quote: "Free quote",
     call_now: "Call now",
-    hero_h: "Construction and renovation in Schiedam",
+    hero_h: "Handyman & maintenance in Leidschendam",
     hero_p:
-      "Laminate floors, bathrooms, tiling, painting, plastering, underfloor heating, toilet renovation and carpentry. One point of contact. Guaranteed craftsmanship.",
+      "Komtifix provides maintenance and renovation services: painting, carpentry, plumbing, tiling, flooring and small renovations. Fast, clean and reliable.",
     view_options: "Explore our services",
     read_more: "Read more",
     all_services: "All services",
@@ -347,20 +346,18 @@ tag_trap: "trap",
     reviews_h: "What our clients say",
 
     /* PreHeader */
-    ph_trust: "Skilled & reliable",
-    ph_region: "Schiedam and the Rotterdam region",
-    ph_services: "Bathrooms • Tiling • Plastering • Carpentry",
-    ph_floorheat: "Underfloor heating & tile floors",
-    ph_paint: "Interior and exterior painting",
+    ph_trust: "Clean work, fast & reliable",
+ph_region: "Leidschendam and surroundings",
+ph_services: "Maintenance • Renovation • Carpentry • Plumbing",
+ph_floorheat: "Floors & (underfloor) heating",
+ph_paint: "Interior & exterior painting",
+
 
     /* Footer */
-    footer_intro: "All-round construction & renovation in Schiedam and the Rotterdam region.",
-    footer_follow: "Follow us",
-    footer_company: "Company",
-    footer_contact: "Contact",
-    footer_address_line1: "Von Leibnizstraat 23 a",
-    footer_address_line2: "3112 XN Schiedam",
-    footer_rights: "Klusdam. All rights reserved.",
+    footer_intro: "Komtifix: handyman & maintenance in Leidschendam and surroundings.",
+footer_address_line1: "Pr. Annalaan 343",
+footer_address_line2: "2263 XK Leidschendam",
+footer_rights: "Komtifix. All rights reserved.",
 
     /* Footer service labels (kept for compatibility) */
     svc_laminaat: "Laminate flooring",
@@ -518,11 +515,11 @@ tag_trap: "trap",
     review_3: "Fast and professional. Laminate and skirting boards finished perfectly. Thank you!",
     review_4: "Plastering and painting exceeded expectations. Very neatly delivered.",
 
-    why_klusdam: "Why choose Klusdam",
-why_b_1: "Premium materials and professional-grade tools for durable results.",
-why_b_2: "Clear quotes and planning. No surprises afterwards.",
-why_b_3: "Clean working method: protection, dust reduction, and daily cleanup.",
-why_b_4: "Local professionals with years of experience in Schiedam and the Rotterdam region.",
+    why_brand: "Why choose Komtifix",
+why_b_1: "Quality workmanship with durable materials.",
+why_b_2: "Clear agreements and transparent planning.",
+why_b_3: "Clean working methods: protection, dust control and tidy delivery.",
+why_b_4: "Local professionals active in Leidschendam and nearby areas.",
 
 examples_work: "Examples of our work",
 open_image: "Open image",
@@ -554,18 +551,15 @@ contact_phone: "Phone",
 contact_email_label: "Email",
 
 
-over_title: "Klusdam in Schiedam",
+over_title: "Komtifix in Leidschendam",
 over_intro:
-  "Stress-free home renovation. We plan, coordinate, and deliver with guarantee. One team for demolition, plumbing, tiling, carpentry, plastering, and painting.",
-over_bullet_1:
-  "Clear agreements. Tight planning and one fixed point of contact.",
-over_bullet_2:
-  "Clean work: dust control, protection, and daily cleanup.",
-over_bullet_3:
-  "Durable materials and craftsmanship that lasts for years.",
+  "Maintenance and renovation without stress. We plan, coordinate and deliver clean results. One team for demolition, plumbing, tiling, carpentry, plastering and painting.",
+over_bullet_1: "Appointments kept. One clear point of contact.",
+over_bullet_2: "Clean work: protection, dust control and daily cleanup.",
+over_bullet_3: "Durable materials and long-lasting craftsmanship.",
 over_location:
-  "Based at Von Leibnizstraat 23 a, 3112 XN Schiedam. Active in Schiedam, Rotterdam, Vlaardingen, Delft and surroundings.",
-over_image_alt: "Klusdam team at work",
+  "Based at: Pr. Annalaan 343, 2263 XK Leidschendam. Service area: Leidschendam, Voorburg, The Hague and surroundings.",
+over_image_alt: "Komtifix team at work",
 
 cat_badkamers: "Bathrooms",
 cat_vloeren: "Floors",
@@ -612,9 +606,9 @@ tag_trap: "stairs",
     contact: "Kontakt",
     cta_quote: "Unverbindliches Angebot",
     call_now: "Jetzt anrufen",
-    hero_h: "Bau und Renovierung in Schiedam",
+    hero_h: "Handwerker & Wartung in Leidschendam",
     hero_p:
-      "Laminat, Bäder, Fliesen, Maler- und Putzarbeiten, Fußbodenheizung, WC-Renovierung und Tischlerarbeiten. Ein Ansprechpartner. Handwerk mit Garantie.",
+  "Komtifix bietet Wartung und Renovierung: Malerarbeiten, Tischlerarbeiten, Sanitär, Fliesen, Böden und kleinere Umbauten. Schnell, sauber und zuverlässig.",
     view_options: "Unsere Leistungen ansehen",
     read_more: "Mehr lesen",
     all_services: "Alle Leistungen",
@@ -622,20 +616,17 @@ tag_trap: "stairs",
     reviews_h: "Was unsere Kunden sagen",
 
     /* PreHeader */
-    ph_trust: "Fachgerecht & zuverlässig",
-    ph_region: "Schiedam und Region Rotterdam",
-    ph_services: "Bad • Fliesen • Putz • Tischlerarbeiten",
-    ph_floorheat: "Fußbodenheizung & Fliesen",
-    ph_paint: "Innen- und Außenanstrich",
+    ph_trust: "Sauber, schnell & zuverlässig",
+ph_region: "Leidschendam und Umgebung",
+ph_services: "Wartung • Renovierung • Tischler • Sanitär",
+ph_floorheat: "Böden & Fußbodenheizung",
+ph_paint: "Innen- und Außenanstrich",
 
     /* Footer */
-    footer_intro: "Allround Bau & Renovierung in Schiedam und Region Rotterdam.",
-    footer_follow: "Folgen Sie uns",
-    footer_company: "Unternehmen",
-    footer_contact: "Kontakt",
-    footer_address_line1: "Von Leibnizstraat 23 a",
-    footer_address_line2: "3112 XN Schiedam",
-    footer_rights: "Klusdam. Alle Rechte vorbehalten.",
+    footer_intro: "Komtifix: Handwerker & Wartung in Leidschendam und Umgebung.",
+footer_address_line1: "Pr. Annalaan 343",
+footer_address_line2: "2263 XK Leidschendam",
+footer_rights: "Komtifix. Alle Rechte vorbehalten.",
 
     /* Footer service labels */
     svc_laminaat: "Laminat verlegen",
@@ -793,11 +784,11 @@ tag_trap: "stairs",
     review_3: "Schnell und professionell. Laminat und Sockelleisten perfekt verarbeitet. Vielen Dank!",
     review_4: "Putz- und Malerarbeiten übertrafen die Erwartungen. Sehr ordentlich ausgeführt.",
 
-    why_klusdam: "Warum Klusdam wählen",
-why_b_1: "Premium-Materialien und Markenwerkzeuge für langlebige Ergebnisse.",
-why_b_2: "Klare Angebote und Planung. Keine Überraschungen im Nachhinein.",
-why_b_3: "Sauberes Arbeiten: Abdecken, Staubreduzierung und tägliche Reinigung.",
-why_b_4: "Lokale Fachkräfte mit jahrelanger Erfahrung in Schiedam und Umgebung.",
+    why_brand: "Warum Komtifix wählen",
+why_b_1: "Saubere Handwerksarbeit mit langlebigen Materialien.",
+why_b_2: "Klare Absprachen und transparente Planung.",
+why_b_3: "Sauberes Arbeiten: Abdecken, Staubbegrenzung, ordentliches Ergebnis.",
+why_b_4: "Lokale Fachkräfte in Leidschendam und Umgebung.",
 
 examples_work: "Beispiele unserer Arbeit",
 open_image: "Bild öffnen",
@@ -829,18 +820,15 @@ contact_phone: "Telefon",
 contact_email_label: "E-Mail",
 
 
-over_title: "Klusdam in Schiedam",
+over_title: "Komtifix in Leidschendam",
 over_intro:
-  "Stressfreie Hausrenovierung. Wir planen, koordinieren und liefern mit Garantie. Ein Team für Abbruch, Sanitär, Fliesen, Tischler-, Putz- und Malerarbeiten.",
-over_bullet_1:
-  "Absprachen werden eingehalten. Klare Planung und ein fester Ansprechpartner.",
-over_bullet_2:
-  "Sauberes Arbeiten: Staubreduzierung, Abdeckung und tägliche Reinigung.",
-over_bullet_3:
-  "Langlebige Materialien und Handwerksqualität.",
+  "Wartung und Renovierung ohne Stress. Wir planen, koordinieren und liefern sauber ab. Ein Team für Abriss, Sanitär, Fliesen, Tischler, Putz- und Malerarbeiten.",
+over_bullet_1: "Absprachen werden eingehalten. Ein Ansprechpartner.",
+over_bullet_2: "Sauberes Arbeiten und tägliches Aufräumen.",
+over_bullet_3: "Langlebige Materialien und hochwertige Ausführung.",
 over_location:
-  "Standort: Von Leibnizstraat 23 a, 3112 XN Schiedam. Einsatzgebiet: Schiedam, Rotterdam, Vlaardingen, Delft und Umgebung.",
-over_image_alt: "Klusdam Team bei der Arbeit",
+  "Standort: Pr. Annalaan 343, 2263 XK Leidschendam. Einsatzgebiet: Leidschendam, Voorburg, Den Haag und Umgebung.",
+over_image_alt: "Komtifix Team bei der Arbeit",
 
 
 cat_badkamers: "Badezimmer",
@@ -888,9 +876,9 @@ tag_trap: "Treppe",
     contact: "Contact",
     cta_quote: "Devis gratuit",
     call_now: "Appeler",
-    hero_h: "Construction et rénovation à Schiedam",
+    hero_h:  "Bricolage & entretien à Leidschendam",
     hero_p:
-      "Sols stratifiés, salles de bain, carrelage, peinture, plâtrerie, chauffage au sol, rénovation WC et menuiserie. Un seul interlocuteur. Travail garanti.",
+  "Komtifix propose des services d’entretien et de rénovation : peinture, menuiserie, plomberie, carrelage, sols et petits travaux. Rapide, propre et fiable.",
     view_options: "Découvrez nos services",
     read_more: "Lire plus",
     all_services: "Tous les services",
@@ -898,20 +886,18 @@ tag_trap: "Treppe",
     reviews_h: "Ce que disent nos clients",
 
     /* PreHeader */
-    ph_trust: "Professionnel et fiable",
-    ph_region: "Schiedam et région de Rotterdam",
-    ph_services: "Salle de bain • Carrelage • Plâtrerie • Menuiserie",
-    ph_floorheat: "Chauffage au sol & carrelage",
-    ph_paint: "Peinture intérieure et extérieure",
+    ph_trust: "Travail propre, rapide et fiable",
+ph_region: "Leidschendam et environs",
+ph_services: "Entretien • Rénovation • Menuiserie • Plomberie",
+ph_floorheat: "Sols & chauffage au sol",
+ph_paint: "Peinture intérieure et extérieure",
 
     /* Footer */
-    footer_intro: "Construction & rénovation à Schiedam et dans la région de Rotterdam.",
-    footer_follow: "Suivez-nous",
-    footer_company: "Entreprise",
-    footer_contact: "Contact",
-    footer_address_line1: "Von Leibnizstraat 23 a",
-    footer_address_line2: "3112 XN Schiedam",
-    footer_rights: "Klusdam. Tous droits réservés.",
+    footer_intro: "Komtifix : bricolage & entretien à Leidschendam et environs.",
+footer_address_line1: "Pr. Annalaan 343",
+footer_address_line2: "2263 XK Leidschendam",
+footer_rights: "Komtifix. Tous droits réservés.",
+
 
     /* Footer service labels */
     svc_laminaat: "Pose de stratifié",
@@ -1070,11 +1056,11 @@ tag_trap: "Treppe",
     review_4: "Travaux de plâtrerie et de peinture au-delà de nos attentes. Résultat très propre.",
 
 
-    why_klusdam: "Pourquoi choisir Klusdam",
-why_b_1: "Matériaux premium et outils professionnels pour un résultat durable.",
-why_b_2: "Devis et planning clairs. Aucune surprise après coup.",
-why_b_3: "Travail soigné : protection, réduction de la poussière et nettoyage quotidien.",
-why_b_4: "Artisans locaux avec des années d’expérience à Schiedam et dans la région de Rotterdam.",
+    why_brand: "Pourquoi choisir Komtifix",
+why_b_1: "Travail soigné avec des matériaux durables.",
+why_b_2: "Accords clairs et planification transparente.",
+why_b_3: "Méthode propre : protection, contrôle de la poussière, finition nette.",
+why_b_4: "Professionnels locaux à Leidschendam et alentours.",
 
 examples_work: "Exemples de nos réalisations",
 open_image: "Ouvrir l’image",
@@ -1107,18 +1093,15 @@ contact_phone: "Téléphone",
 contact_email_label: "E-mail",
 
 
-over_title: "Klusdam à Schiedam",
+over_title: "Komtifix à Leidschendam",
 over_intro:
-  "Rénovation de maison sans stress. Nous planifions, coordonnons et livrons avec garantie. Une seule équipe pour démolition, plomberie, carrelage, menuiserie, plâtrerie et peinture.",
-over_bullet_1:
-  "Engagements clairs et un seul interlocuteur.",
-over_bullet_2:
-  "Travail propre : limitation de la poussière et nettoyage quotidien.",
-over_bullet_3:
-  "Matériaux durables et savoir-faire de qualité.",
+  "Entretien et rénovation sans stress. Nous planifions, coordonnons et livrons proprement. Une seule équipe pour démolition, plomberie, carrelage, menuiserie, plâtrage et peinture.",
+over_bullet_1: "Engagements respectés. Un seul interlocuteur.",
+over_bullet_2: "Travail propre et rangement quotidien.",
+over_bullet_3: "Matériaux durables et savoir-faire de qualité.",
 over_location:
-  "Basé à Von Leibnizstraat 23 a, 3112 XN Schiedam. Zone d’intervention : Schiedam, Rotterdam, Vlaardingen, Delft et environs.",
-over_image_alt: "Équipe Klusdam au travail",
+  "Adresse : Pr. Annalaan 343, 2263 XK Leidschendam. Zone d’intervention : Leidschendam, Voorburg, La Haye et environs.",
+over_image_alt: "Équipe Komtifix au travail",
 
 
 cat_badkamers: "Salles de bain",
@@ -1166,9 +1149,9 @@ tag_trap: "escalier",
     contact: "İletişim",
     cta_quote: "Ücretsiz teklif",
     call_now: "Hemen ara",
-    hero_h: "Schiedam’da inşaat ve renovasyon",
+    hero_h: "Leidschendam’da tadilat ve bakım",
     hero_p:
-      "Laminat, banyo, fayans, boya, alçı, yerden ısıtma, WC yenileme ve marangozluk. Tek muhatap. Garantili işçilik.",
+  "Komtifix; boya, marangozluk, tesisat, fayans, zemin ve küçük renovasyon işleri sunar. Hızlı, temiz ve güvenilir.",
     view_options: "Hizmetlerimize göz atın",
     read_more: "Devamını oku",
     all_services: "Tüm hizmetler",
@@ -1176,21 +1159,17 @@ tag_trap: "escalier",
     reviews_h: "Müşterilerimiz ne diyor",
 
     /* PreHeader */
-    ph_trust: "Uzman ve güvenilir",
-    ph_region: "Schiedam ve Rotterdam bölgesi",
-    ph_services: "Banyo • Fayans • Alçı • Marangozluk",
-    ph_floorheat: "Yerden ısıtma ve fayans",
-    ph_paint: "İç ve dış boya",
+    ph_trust: "Temiz iş, hızlı ve güvenilir",
+ph_region: "Leidschendam ve çevresi",
+ph_services: "Bakım • Tadilat • Marangozluk • Tesisat",
+ph_floorheat: "Zeminler & yerden ısıtma",
+ph_paint: "İç ve dış boya",
 
     /* Footer */
-    footer_intro: "Schiedam ve Rotterdam bölgesinde inşaat ve renovasyon.",
-    footer_follow: "Bizi takip edin",
-    footer_company: "Şirket",
-    footer_contact: "İletişim",
-    footer_address_line1: "Von Leibnizstraat 23 a",
-    footer_address_line2: "3112 XN Schiedam",
-    footer_rights: "Klusdam. Tüm hakları saklıdır.",
-
+    footer_intro: "Komtifix: Leidschendam ve çevresinde tadilat & bakım.",
+footer_address_line1: "Pr. Annalaan 343",
+footer_address_line2: "2263 XK Leidschendam",
+footer_rights: "Komtifix. Tüm hakları saklıdır.",
     /* Footer service labels */
     svc_laminaat: "Laminat döşeme",
     svc_badkamer: "Banyo renovasyonu",
@@ -1348,11 +1327,12 @@ tag_trap: "escalier",
     review_4: "Alçı ve boya işleri beklentimizin üzerindeydi. Çok temiz teslim edildi.",
 
 
-    why_klusdam: "Neden Klusdam’ı seçmelisiniz",
-why_b_1: "Uzun ömürlü sonuçlar için kaliteli malzemeler ve profesyonel ekipman.",
-why_b_2: "Net teklifler ve planlama. Sonradan sürpriz yok.",
-why_b_3: "Temiz çalışma: koruma, toz azaltma ve günlük temizlik.",
-why_b_4: "Schiedam ve Rotterdam bölgesinde yılların deneyimine sahip yerel ustalar.",
+    why_brand: "Neden Komtifix",
+why_b_1: "Dayanıklı malzemelerle kaliteli işçilik.",
+why_b_2: "Net anlaşmalar ve şeffaf planlama.",
+why_b_3: "Temiz çalışma: koruma, toz kontrolü, düzenli teslim.",
+why_b_4: "Leidschendam ve çevresinde yerel uzmanlar.",
+
 
 examples_work: "Yaptığımız işlerden örnekler",
 open_image: "Görseli aç",
@@ -1386,18 +1366,15 @@ contact_phone: "Telefon",
 contact_email_label: "E-posta",
 
 
-over_title: "Schiedam’da Klusdam",
+over_title: "Leidschendam’da Komtifix",
 over_intro:
-  "Stres olmadan ev yenileme. Planlar, koordine eder ve garantiyle teslim ederiz. Yıkım, tesisat, fayans, marangozluk, sıva ve boya için tek ekip.",
-over_bullet_1:
-  "Söz verdik mi yaparız. Net planlama ve tek muhatap.",
-over_bullet_2:
-  "Temiz çalışma: toz kontrolü ve günlük temizlik.",
-over_bullet_3:
-  "Uzun ömürlü malzemeler ve kaliteli işçilik.",
+  "Stres olmadan bakım ve renovasyon. Planlar, koordine eder ve temiz teslim ederiz. Yıkım, tesisat, fayans, marangozluk, sıva ve boya için tek ekip.",
+over_bullet_1: "Söz verildiği gibi iş. Tek muhatap.",
+over_bullet_2: "Temiz çalışma ve günlük toparlama.",
+over_bullet_3: "Uzun ömürlü malzemeler ve ustalık.",
 over_location:
-  "Merkez: Von Leibnizstraat 23 a, 3112 XN Schiedam. Hizmet alanı: Schiedam, Rotterdam, Vlaardingen, Delft ve çevresi.",
-over_image_alt: "Klusdam ekibi çalışırken",
+  "Adres: Pr. Annalaan 343, 2263 XK Leidschendam. Hizmet bölgesi: Leidschendam, Voorburg, Den Haag ve çevresi.",
+over_image_alt: "Komtifix ekibi çalışırken",
 
 
 cat_badkamers: "Banyolar",
@@ -1445,9 +1422,9 @@ tag_trap: "merdiven",
     contact: "اتصل بنا",
     cta_quote: "عرض مجاني",
     call_now: "اتصل الآن",
-    hero_h: "أعمال البناء والتجديد في سخيدام",
+    hero_h:  "الصيانة والتجديد في لايدسخندام",
     hero_p:
-      "أرضيات، حمامات، تبليط، دهان، لياسة، تدفئة أرضية، تجديد مرحاض وأعمال نجارة. جهة واحدة للتواصل. جودة مضمونة.",
+  "تقدم Komtifix خدمات الصيانة والتجديد: الدهان، النجارة، السباكة، البلاط، الأرضيات وأعمال التجديد الصغيرة. عمل سريع ونظيف وموثوق.",
     view_options: "اطّلع على خدماتنا",
     read_more: "اقرأ المزيد",
     all_services: "كل الخدمات",
@@ -1455,20 +1432,17 @@ tag_trap: "merdiven",
     reviews_h: "ماذا يقول عملاؤنا",
 
     /* PreHeader */
-    ph_trust: "احترافية وموثوقية",
-    ph_region: "سخيدام ومنطقة روتردام",
-    ph_services: "حمامات • تبليط • لياسة • نجارة",
-    ph_floorheat: "تدفئة أرضية وبلاط",
-    ph_paint: "دهان داخلي وخارجي",
-
-    /* Footer */
-    footer_intro: "أعمال بناء وتجديد في سخيدام ومنطقة روتردام.",
-    footer_follow: "تابعنا",
-    footer_company: "الشركة",
-    footer_contact: "التواصل",
-    footer_address_line1: "Von Leibnizstraat 23 a",
-    footer_address_line2: "3112 XN Schiedam",
-    footer_rights: "Klusdam. جميع الحقوق محفوظة.",
+    ph_trust: "عمل نظيف وسريع وموثوق",
+ph_region: "لايدسخندام والمناطق المجاورة",
+ph_services: "صيانة • تجديد • نجارة • سباكة",
+ph_floorheat: "الأرضيات والتدفئة الأرضية",
+ph_paint: "دهان داخلي وخارجي",
+    
+/* Footer */
+    footer_intro: "Komtifix: صيانة وتجديد في لايدسخندام والمناطق المجاورة.",
+footer_address_line1: "Pr. Annalaan 343",
+footer_address_line2: "2263 XK Leidschendam",
+footer_rights: "Komtifix. جميع الحقوق محفوظة.",
 
     /* Footer service labels */
     svc_laminaat: "تركيب أرضيات لامينيت",
@@ -1626,12 +1600,11 @@ tag_trap: "merdiven",
     review_3: "عمل سريع واحترافي. تركيب الأرضية والحواف كان مثالياً. شكراً لكم.",
     review_4: "أعمال الجبس والدهان كانت أفضل من المتوقع. تسليم نظيف جداً.",
 
-    why_klusdam: "لماذا تختار كلوسدام",
-why_b_1: "مواد عالية الجودة وأدوات احترافية لنتائج تدوم طويلاً.",
-why_b_2: "عروض أسعار وجدولة واضحة بدون مفاجآت لاحقًا.",
-why_b_3: "عمل نظيف: تغطية، تقليل الغبار، وتنظيف يومي.",
-why_b_4: "فنيون محليون بخبرة سنوات في سخيدام ومنطقة روتردام.",
-
+    why_brand: "لماذا تختار Komtifix",
+why_b_1: "حرفية عالية مع مواد متينة.",
+why_b_2: "اتفاقات واضحة وجدول عمل شفاف.",
+why_b_3: "عمل منظم: حماية، تقليل الغبار وتسليم نظيف.",
+why_b_4: "فنيون محليون في لايدسخندام والمناطق القريبة.",
 examples_work: "أمثلة من أعمالنا",
 open_image: "فتح الصورة",
 example: "مثال",
@@ -1662,18 +1635,15 @@ contact_address: "العنوان",
 contact_phone: "الهاتف",
 contact_email_label: "البريد الإلكتروني",
 
-over_title: "كلوسدام في سخيدام",
+over_title: "Komtifix في لايدسخندام",
 over_intro:
-  "تجديد المنازل بدون توتر. نخطط، ننسق، ونسلّم مع ضمان. فريق واحد للهدم، السباكة، التبليط، النجارة، اللياسة والدهان.",
-over_bullet_1:
-  "التزام كامل بالمواعيد ونقطة تواصل واحدة.",
-over_bullet_2:
-  "عمل نظيف: تقليل الغبار وتنظيف يومي.",
-over_bullet_3:
-  "مواد متينة وحرفية تدوم لسنوات.",
+  "صيانة وتجديد بدون توتر. نخطط وننسق ونسلم العمل بشكل نظيف. فريق واحد للهدم، السباكة، البلاط، النجارة، الجبس والدهان.",
+over_bullet_1: "الالتزام بالمواعيد ونقطة تواصل واحدة.",
+over_bullet_2: "عمل نظيف وتنظيف يومي.",
+over_bullet_3: "مواد متينة وجودة تدوم طويلاً.",
 over_location:
-  "الموقع: Von Leibnizstraat 23 a، 3112 XN سخيدام. منطقة العمل: سخيدام، روتردام، فلااردينغن، دلفت والمناطق المحيطة.",
-over_image_alt: "فريق كلوسدام أثناء العمل",
+  "المقر: Pr. Annalaan 343، 2263 XK لايدسخندام. منطقة الخدمة: لايدسخندام، فوربورخ، لاهاي والمناطق المجاورة.",
+over_image_alt: "فريق Komtifix أثناء العمل",
 
 cat_badkamers: "الحمّامات",
 cat_vloeren: "الأرضيات",

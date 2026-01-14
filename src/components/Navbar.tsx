@@ -1,13 +1,21 @@
+// src/components/Navbar.tsx
 "use client";
 
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
+import { motion, AnimatePresence } from "framer-motion";
 import { services } from "@/lib/services";
 import { useI18n } from "@/lib/i18n";
+import { brand } from "@/lib/brand";
 
 function cx(...cls: (string | false | null | undefined)[]) {
   return cls.filter(Boolean).join(" ");
+}
+
+function telHref(phone: string) {
+  const cleaned = phone.trim();
+  return cleaned.startsWith("tel:") ? cleaned : `tel:${cleaned.replace(/\s+/g, "")}`;
 }
 
 export default function Navbar() {
@@ -19,7 +27,7 @@ export default function Navbar() {
 
   const hoverTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  // Close dropdown/drawer on route change
+  // Close dropdowns on route change
   useEffect(() => {
     setDienstenOpen(false);
     setOpen(false);
@@ -32,10 +40,10 @@ export default function Navbar() {
   }
   function closeWithIntent() {
     if (hoverTimer.current) clearTimeout(hoverTimer.current);
-    hoverTimer.current = setTimeout(() => setDienstenOpen(false), 120);
+    hoverTimer.current = setTimeout(() => setDienstenOpen(false), 150);
   }
 
-  // Keyboard accessibility for desktop dropdown
+  // Keyboard accessibility
   function onDienstenKey(e: React.KeyboardEvent) {
     if (e.key === "Enter" || e.key === " ") {
       e.preventDefault();
@@ -44,157 +52,251 @@ export default function Navbar() {
     if (e.key === "Escape") setDienstenOpen(false);
   }
 
-  // Split services into two columns (desktop)
-  const left = services.slice(0, Math.ceil(services.length / 2));
-  const right = services.slice(Math.ceil(services.length / 2));
+  const columns = useMemo(() => {
+    const mid = Math.ceil(services.length / 2);
+    return { left: services.slice(0, mid), right: services.slice(mid) };
+  }, []);
 
   return (
-    <header className="sticky top-0 z-40 bg-white/70 backdrop-blur supports-[backdrop-filter]:bg-white/60 border-b border-black/5">
-      <div className="mx-auto max-w-7xl px-4 h-16 flex items-center justify-between">
-        {/* Logo */}
-        <div className="flex items-center gap-3">
-          <Link href="/" aria-label="Klusdam homepage" className="flex items-center">
-            <img
-              src="https://i.ibb.co/Z1hM3YWs/final-1.png"
-              alt="Klusdam logo"
-              className="h-full max-h-14 w-auto object-contain opacity-90"
-            />
-          </Link>
-        </div>
+    // CHANGED: z-40 allows the Preheader (if z-50) to dropdown OVER this navbar
+    <header className="sticky top-0 z-40">
+      {/* Glass header bar */}
+      <div className="border-b border-black/5 bg-white/60 supports-[backdrop-filter]:bg-white/40 backdrop-blur">
+        <div className="mx-auto max-w-7xl px-4 h-16 flex items-center justify-between">
+          
+          {/* Brand */}
+          <div className="flex items-center gap-3">
+            <Link href="/" aria-label={`${brand.name} homepage`} className="flex items-center gap-3">
+              {/* Logo Image */}
+              <img
+                src="/logo.svg"
+                alt={`${brand.name} logo`}
+                className="h-9 w-auto object-contain opacity-95"
+                onError={(e) => {
+                  (e.currentTarget as HTMLImageElement).style.display = "none";
+                }}
+              />
+              {/* CHANGED: Bigger, Bold, Colored Text */}
+              <span className="text-2xl font-bold tracking-tight text-teal">
+                {brand.name}
+              </span>
+              <span className="hidden sm:inline text-sm font-medium text-black/60 pt-1">
+                {brand.location.city}
+              </span>
+            </Link>
+          </div>
 
-        {/* Desktop nav */}
-        <nav className="hidden md:flex items-center gap-2">
-          <NavLink href="/" active={path === "/"}>
-            {t("home")}
-          </NavLink>
+          {/* Desktop nav */}
+          <nav className="hidden md:flex items-center gap-1">
+            <NavLink href="/" active={path === "/"}>
+              {t("home")}
+            </NavLink>
 
-          {/* Diensten with hover-intent dropdown */}
-          <div className="relative" onMouseEnter={openWithIntent} onMouseLeave={closeWithIntent}>
-            <button
-              onClick={() => setDienstenOpen((v) => !v)}
-              onKeyDown={onDienstenKey}
-              aria-haspopup="true"
-              aria-expanded={dienstenOpen}
+            {/* Diensten dropdown container */}
+            <div 
+              className="relative h-full flex items-center" 
+              onMouseEnter={openWithIntent} 
+              onMouseLeave={closeWithIntent}
+            >
+              <button
+                onClick={() => setDienstenOpen((v) => !v)}
+                onKeyDown={onDienstenKey}
+                aria-haspopup="true"
+                aria-expanded={dienstenOpen}
+                className={cx(
+                  "px-3 py-2 rounded-lg font-semibold inline-flex items-center gap-1",
+                  "hover:bg-black/5",
+                  "focus:outline-none focus-visible:ring-2 focus-visible:ring-teal",
+                  path?.startsWith("/diensten") && "text-teal"
+                )}
+              >
+                {t("diensten")}
+                <span className={`text-[10px] transition-transform duration-200 ${dienstenOpen ? "rotate-180" : ""}`}>▼</span>
+              </button>
+
+              <AnimatePresence>
+                {dienstenOpen && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 10, scale: 0.98 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: 10, scale: 0.98 }}
+                    transition={{ duration: 0.2, ease: "easeOut" }}
+                    // CHANGED: Positioning logic.
+                    // top-full pushes it below the header.
+                    // left-1/2 -translate-x-1/2 centers it relative to the 'Diensten' text.
+                    // pt-2 creates an invisible bridge so mouse doesn't disconnect.
+                    className="absolute top-full left-1/2 -translate-x-1/2 pt-4 w-[620px]"
+                    role="menu"
+                  >
+                    {/* The actual Glass Box */}
+                    <div className="rounded-2xl p-4 glass glass-border shadow-xl bg-black/80 backdrop-blur-xl border border-white/10">
+                        <div className="grid grid-cols-2 gap-4 p-1">
+                          <div className="flex flex-col gap-1">
+                            {columns.left.map((s) => (
+                              <Link
+                                key={s.slug}
+                                href={`/diensten/${s.slug}`}
+                                className="px-3 py-2 rounded-lg hover:bg-white/10 text-sm text-white/90 transition-colors"
+                                role="menuitem"
+                              >
+                                {t(s.titleKey)}
+                              </Link>
+                            ))}
+                          </div>
+
+                          <div className="flex flex-col gap-1">
+                            {columns.right.map((s) => (
+                              <Link
+                                key={s.slug}
+                                href={`/diensten/${s.slug}`}
+                                className="px-3 py-2 rounded-lg hover:bg-white/10 text-sm text-white/90 transition-colors"
+                                role="menuitem"
+                              >
+                                {t(s.titleKey)}
+                              </Link>
+                            ))}
+                          </div>
+                        </div>
+
+                        <div className="border-t border-white/15 mt-3 pt-3 flex items-center justify-between px-2">
+                          <span className="text-xs text-white/60 font-medium">
+                            {t("cta_quote")}
+                          </span>
+                          <Link
+                            href="/diensten"
+                            className="inline-flex items-center gap-1 text-xs font-bold uppercase tracking-wide text-teal hover:text-white transition-colors"
+                          >
+                            {t("all_services")} →
+                          </Link>
+                        </div>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+
+            <NavLink href="/over-ons" active={path === "/over-ons"}>
+              {t("over")}
+            </NavLink>
+            <NavLink href="/projecten" active={path === "/projecten"}>
+              {t("projecten")}
+            </NavLink>
+            <NavLink href="/contact" active={path === "/contact"}>
+              {t("contact")}
+            </NavLink>
+          </nav>
+
+          {/* Desktop CTAs */}
+          <div className="hidden md:flex items-center gap-2">
+            {/* REMOVED: Phone button from desktop (it's in preheader) */}
+            
+            <Link
+              href="/contact"
               className={cx(
-                "px-3 py-2 rounded-lg font-semibold hover:bg-black/5",
-                path?.startsWith("/diensten") && "text-bronze"
+                "inline-flex items-center rounded-xl px-5 py-2.5 text-sm font-bold text-white",
+                "bg-teal hover:bg-teal/90",
+                "shadow-lg shadow-teal/20 transition-all duration-200 hover:-translate-y-0.5",
+                "focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-teal"
               )}
             >
-              {t("diensten")}
-            </button>
-
-            {dienstenOpen && (
-              <div
-                className="absolute left-0 mt-2 w-[560px] rounded-xl shadow-xl bg-white border border-black/10 p-4 grid grid-cols-2 gap-2"
-                onMouseLeave={closeWithIntent}
-                role="menu"
-              >
-                <div className="flex flex-col">
-                  {left.map((s) => (
-                    <Link
-                      key={s.slug}
-                      href={`/diensten/${s.slug}`}
-                      className="px-3 py-2 rounded hover:bg-cream text-sm"
-                      role="menuitem"
-                    >
-                      {t(s.titleKey)}
-                    </Link>
-                  ))}
-                </div>
-
-                <div className="flex flex-col">
-                  {right.map((s) => (
-                    <Link
-                      key={s.slug}
-                      href={`/diensten/${s.slug}`}
-                      className="px-3 py-2 rounded hover:bg-cream text-sm"
-                      role="menuitem"
-                    >
-                      {t(s.titleKey)}
-                    </Link>
-                  ))}
-                </div>
-
-                <div className="col-span-2 border-t border-black/10 mt-2 pt-2 text-right">
-                  <Link href="/diensten" className="inline-flex items-center gap-1 text-sm font-semibold text-bronze">
-                    {t("all_services")} →
-                  </Link>
-                </div>
-              </div>
-            )}
+              {t("cta_quote")}
+            </Link>
           </div>
 
-          <NavLink href="/over-ons" active={path === "/over-ons"}>
-            {t("over")}
-          </NavLink>
-          <NavLink href="/projecten" active={path === "/projecten"}>
-            {t("projecten")}
-          </NavLink>
-          <NavLink href="/contact" active={path === "/contact"}>
-            {t("contact")}
-          </NavLink>
-        </nav>
-
-        {/* Mobile hamburger */}
-        <button
-          className="md:hidden inline-flex items-center justify-center rounded-lg p-3 ring-1 ring-black/10"
-          aria-label={t("open_menu")}
-          aria-expanded={open}
-          onClick={() => setOpen((v) => !v)}
-        >
-          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
-            <line x1="3" y1="6" x2="21" y2="6" />
-            <line x1="3" y1="12" x2="21" y2="12" />
-            <line x1="3" y1="18" x2="21" y2="18" />
-          </svg>
-        </button>
+          {/* Mobile hamburger */}
+          <button
+            className="md:hidden inline-flex items-center justify-center rounded-xl p-2.5 text-black/80 hover:bg-black/5"
+            aria-label={t("open_menu")}
+            aria-expanded={open}
+            onClick={() => setOpen((v) => !v)}
+          >
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <line x1="3" y1="6" x2="21" y2="6" />
+              <line x1="3" y1="12" x2="21" y2="12" />
+              <line x1="3" y1="18" x2="21" y2="18" />
+            </svg>
+          </button>
+        </div>
       </div>
 
-      {/* Mobile drawer */}
-      {open && (
-        <div className="md:hidden border-t border-black/10 bg-white">
-          <div className="mx-auto max-w-7xl px-4 py-3">
-            <MobileLink href="/" onClick={() => setOpen(false)} active={path === "/"}>
-              {t("home")}
-            </MobileLink>
+      {/* Mobile drawer (animated) */}
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.2, ease: "easeOut" }}
+            className="md:hidden border-b border-black/10 bg-white shadow-xl overflow-hidden"
+          >
+            <div className="px-4 py-4 space-y-1">
+              <MobileLink href="/" onClick={() => setOpen(false)} active={path === "/"}>
+                {t("home")}
+              </MobileLink>
 
-            {/* Mobile accordion for Diensten */}
-            <details className="group">
-              <summary className="cursor-pointer select-none px-3 py-2 font-semibold rounded-lg hover:bg-black/5 flex items-center justify-between">
-                <span className={cx(path?.startsWith("/diensten") && "text-bronze")}>{t("diensten")}</span>
-                <span className="transition-transform group-open:rotate-180">▾</span>
-              </summary>
+              {/* Mobile accordion for Diensten */}
+              <details className="group">
+                <summary className="cursor-pointer select-none px-3 py-3 font-semibold rounded-xl hover:bg-black/5 flex items-center justify-between text-black/80">
+                  <span className={cx(path?.startsWith("/diensten") && "text-teal")}>{t("diensten")}</span>
+                  <span className="transition-transform duration-200 group-open:rotate-180">▾</span>
+                </summary>
 
-              <div className="pl-2">
-                {services.map((s) => (
-                  <MobileLink
-                    key={s.slug}
-                    href={`/diensten/${s.slug}`}
-                    onClick={() => setOpen(false)}
-                    active={path === `/diensten/${s.slug}`}
-                  >
-                    {t(s.titleKey)}
+                <div className="pl-2 border-l-2 border-black/5 ml-3 my-1 space-y-1">
+                  {services.map((s) => (
+                    <MobileLink
+                      key={s.slug}
+                      href={`/diensten/${s.slug}`}
+                      onClick={() => setOpen(false)}
+                      active={path === `/diensten/${s.slug}`}
+                    >
+                      {t(s.titleKey)}
+                    </MobileLink>
+                  ))}
+
+                  <MobileLink href="/diensten" onClick={() => setOpen(false)} active={path === "/diensten"}>
+                    <span className="text-teal font-bold text-sm">{t("all_services")} →</span>
                   </MobileLink>
-                ))}
+                </div>
+              </details>
 
-                <MobileLink href="/diensten" onClick={() => setOpen(false)} active={path === "/diensten"}>
-                  {t("all_services")} →
-                </MobileLink>
+              <MobileLink href="/over-ons" onClick={() => setOpen(false)} active={path === "/over-ons"}>
+                {t("over")}
+              </MobileLink>
+              <MobileLink href="/projecten" onClick={() => setOpen(false)} active={path === "/projecten"}>
+                {t("projecten")}
+              </MobileLink>
+              <MobileLink href="/contact" onClick={() => setOpen(false)} active={path === "/contact"}>
+                {t("contact")}
+              </MobileLink>
+
+              <div className="mt-4 grid grid-cols-2 gap-3 pt-4 border-t border-black/5">
+                {/* Kept Mobile Call button because preheader usually scrolls away on mobile */}
+                <a
+                  href={telHref(brand.phone)}
+                  className={cx(
+                    "inline-flex items-center justify-center rounded-xl px-3 py-3 text-sm font-semibold",
+                    "bg-gray-100 hover:bg-gray-200 text-charcoal",
+                    "focus:outline-none focus-visible:ring-2 focus-visible:ring-teal"
+                  )}
+                >
+                  {t("call")}
+                </a>
+                <Link
+                  href="/contact"
+                  onClick={() => setOpen(false)}
+                  className={cx(
+                    "inline-flex items-center justify-center rounded-xl px-3 py-3 text-sm font-semibold text-white",
+                    "bg-teal hover:opacity-95 shadow-sm",
+                    "focus:outline-none focus-visible:ring-2 focus-visible:ring-teal"
+                  )}
+                >
+                  {t("cta_quote")}
+                </Link>
               </div>
-            </details>
-
-            <MobileLink href="/over-ons" onClick={() => setOpen(false)} active={path === "/over-ons"}>
-              {t("over")}
-            </MobileLink>
-            <MobileLink href="/projecten" onClick={() => setOpen(false)} active={path === "/projecten"}>
-              {t("projecten")}
-            </MobileLink>
-            <MobileLink href="/contact" onClick={() => setOpen(false)} active={path === "/contact"}>
-              {t("contact")}
-            </MobileLink>
-          </div>
-        </div>
-      )}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </header>
   );
 }
@@ -212,8 +314,10 @@ function NavLink({
     <Link
       href={href}
       className={cx(
-        "px-3 py-2 rounded-lg font-semibold hover:bg-black/5 focus:outline-none focus-visible:ring-2 focus-visible:ring-bronze",
-        active && "text-bronze"
+        "px-3 py-2 rounded-lg font-semibold transition-colors",
+        "hover:bg-black/5 text-black/80 hover:text-black",
+        "focus:outline-none focus-visible:ring-2 focus-visible:ring-teal",
+        active && "text-teal"
       )}
     >
       {children}
@@ -236,7 +340,10 @@ function MobileLink({
     <Link
       href={href}
       onClick={onClick}
-      className={cx("block px-3 py-2 rounded-lg font-semibold hover:bg-black/5", active && "text-bronze")}
+      className={cx(
+        "block px-3 py-2.5 rounded-xl font-medium hover:bg-black/5 text-black/70",
+        active && "text-teal bg-teal/5 font-semibold"
+      )}
     >
       {children}
     </Link>

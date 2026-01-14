@@ -3,8 +3,11 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import OverTeaser from "@/components/OverTeaser";
 import ScrollReveal from "@/components/ScrollReveal";
+import { brand } from "@/lib/brand";
 
-export const metadata = { title: "Over ons • Klusdam" };
+export const metadata = {
+  title: `Over ons • ${brand.name}`,
+};
 
 export default function OverOns() {
   return (
@@ -12,7 +15,9 @@ export default function OverOns() {
       <ScrollReveal />
       <PreHeader />
       <Navbar />
-      <OverTeaser />
+      <main>
+        <OverTeaser />
+      </main>
       <Footer />
     </>
   );
