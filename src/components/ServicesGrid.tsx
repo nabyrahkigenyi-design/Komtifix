@@ -10,8 +10,8 @@ import { useI18n } from "@/lib/i18n";
 type Mode = "featured" | "all";
 
 type Props = {
-  mode?: Mode;          // default: featured (homepage)
-  limit?: number;       // default: 9 (homepage)
+  mode?: Mode; // default: featured (homepage)
+  limit?: number; // default: 9 (homepage)
   showHeader?: boolean; // default: true
   showAllLink?: boolean; // default: true (homepage)
 };
@@ -54,48 +54,52 @@ export default function ServicesGrid({
         <div className={showHeader ? "mt-8" : "mt-0"}>
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {visibleServices.map((svc, idx) => (
-              <motion.article
+              <motion.div
                 key={svc.slug}
                 initial={{ opacity: 0, y: 16 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-80px" }}
                 transition={{ duration: 0.35, delay: idx * 0.04 }}
-                className={[
-                  "group rounded-3xl overflow-hidden",
-                  "bg-white/70 glass-border",
-                  "border border-black/5",
-                  "hover:shadow-lg transition-shadow",
-                ].join(" ")}
+                className="h-full"
               >
-                {/* Image */}
-                <div className="relative h-44 overflow-hidden">
-                  <Image
-                    src={svc.img}
-                    alt={t(svc.titleKey)}
-                    fill
-                    className="object-cover transition-transform duration-500 group-hover:scale-105"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent" />
-                </div>
-
-                {/* Content */}
-                <div className="p-5">
-                  <h3 className="text-lg font-semibold">{t(svc.titleKey)}</h3>
-
-                  <p className="mt-2 text-sm text-black/70 line-clamp-3">
-                    {t(svc.excerptKey)}
-                  </p>
-
-                  <div className="mt-4">
-                    <Link
-                      href={`/diensten/${svc.slug}`}
-                      className="inline-flex items-center gap-1 font-semibold text-[color:var(--color-teal)] hover:opacity-90"
-                    >
-                      {t("read_more")} →
-                    </Link>
+                {/* Make the whole tile clickable */}
+                <Link
+                  href={`/diensten/${svc.slug}`}
+                  aria-label={`${t("read_more")}: ${t(svc.titleKey)}`}
+                  className={[
+                    "group block h-full rounded-3xl overflow-hidden",
+                    "bg-white/70 glass-border",
+                    "border border-black/5",
+                    "hover:shadow-lg transition-shadow",
+                    "focus:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--color-teal)]",
+                  ].join(" ")}
+                >
+                  {/* Image */}
+                  <div className="relative h-44 overflow-hidden">
+                    <Image
+                      src={svc.img}
+                      alt={t(svc.titleKey)}
+                      fill
+                      className="object-cover transition-transform duration-500 group-hover:scale-105"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent" />
                   </div>
-                </div>
-              </motion.article>
+
+                  {/* Content */}
+                  <div className="p-5">
+                    <h3 className="text-lg font-semibold">{t(svc.titleKey)}</h3>
+
+                    <p className="mt-2 text-sm text-black/70 line-clamp-3">
+                      {t(svc.excerptKey)}
+                    </p>
+
+                    {/* Keep "Lees meer" visible, but avoid nested <a> */}
+                    <div className="mt-4 inline-flex items-center gap-1 font-semibold text-[color:var(--color-teal)]">
+                      {t("read_more")} →
+                    </div>
+                  </div>
+                </Link>
+              </motion.div>
             ))}
           </div>
         </div>

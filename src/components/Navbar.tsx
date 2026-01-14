@@ -58,12 +58,11 @@ export default function Navbar() {
   }, []);
 
   return (
-    // CHANGED: z-40 allows the Preheader (if z-50) to dropdown OVER this navbar
+    // z-40 allows Preheader (if z-50) to overlay dropdown
     <header className="sticky top-0 z-40">
       {/* Glass header bar */}
       <div className="border-b border-black/5 bg-white/60 supports-[backdrop-filter]:bg-white/40 backdrop-blur">
         <div className="mx-auto max-w-7xl px-4 h-16 flex items-center justify-between">
-          
           {/* Brand */}
           <div className="flex items-center gap-3">
             <Link href="/" aria-label={`${brand.name} homepage`} className="flex items-center gap-3">
@@ -76,13 +75,8 @@ export default function Navbar() {
                   (e.currentTarget as HTMLImageElement).style.display = "none";
                 }}
               />
-              {/* CHANGED: Bigger, Bold, Colored Text */}
-              <span className="text-2xl font-bold tracking-tight text-teal">
-                {brand.name}
-              </span>
-              <span className="hidden sm:inline text-sm font-medium text-black/60 pt-1">
-                {brand.location.city}
-              </span>
+              <span className="text-2xl font-bold tracking-tight text-teal">{brand.name}</span>
+              <span className="hidden sm:inline text-sm font-medium text-black/60 pt-1">{brand.location.city}</span>
             </Link>
           </div>
 
@@ -93,9 +87,9 @@ export default function Navbar() {
             </NavLink>
 
             {/* Diensten dropdown container */}
-            <div 
-              className="relative h-full flex items-center" 
-              onMouseEnter={openWithIntent} 
+            <div
+              className="relative h-full flex items-center"
+              onMouseEnter={openWithIntent}
               onMouseLeave={closeWithIntent}
             >
               <button
@@ -111,7 +105,9 @@ export default function Navbar() {
                 )}
               >
                 {t("diensten")}
-                <span className={`text-[10px] transition-transform duration-200 ${dienstenOpen ? "rotate-180" : ""}`}>▼</span>
+                <span className={`text-[10px] transition-transform duration-200 ${dienstenOpen ? "rotate-180" : ""}`}>
+                  ▼
+                </span>
               </button>
 
               <AnimatePresence>
@@ -121,54 +117,48 @@ export default function Navbar() {
                     animate={{ opacity: 1, y: 0, scale: 1 }}
                     exit={{ opacity: 0, y: 10, scale: 0.98 }}
                     transition={{ duration: 0.2, ease: "easeOut" }}
-                    // CHANGED: Positioning logic.
-                    // top-full pushes it below the header.
-                    // left-1/2 -translate-x-1/2 centers it relative to the 'Diensten' text.
-                    // pt-2 creates an invisible bridge so mouse doesn't disconnect.
                     className="absolute top-full left-1/2 -translate-x-1/2 pt-4 w-[620px]"
                     role="menu"
                   >
-                    {/* The actual Glass Box */}
-                    <div className="rounded-2xl p-4 glass glass-border shadow-xl bg-black/80 backdrop-blur-xl border border-white/10">
-                        <div className="grid grid-cols-2 gap-4 p-1">
-                          <div className="flex flex-col gap-1">
-                            {columns.left.map((s) => (
-                              <Link
-                                key={s.slug}
-                                href={`/diensten/${s.slug}`}
-                                className="px-3 py-2 rounded-lg hover:bg-white/10 text-sm text-white/90 transition-colors"
-                                role="menuitem"
-                              >
-                                {t(s.titleKey)}
-                              </Link>
-                            ))}
-                          </div>
-
-                          <div className="flex flex-col gap-1">
-                            {columns.right.map((s) => (
-                              <Link
-                                key={s.slug}
-                                href={`/diensten/${s.slug}`}
-                                className="px-3 py-2 rounded-lg hover:bg-white/10 text-sm text-white/90 transition-colors"
-                                role="menuitem"
-                              >
-                                {t(s.titleKey)}
-                              </Link>
-                            ))}
-                          </div>
+                    {/* CHANGED: solid light glass so text is always readable */}
+                    <div className="rounded-2xl p-4 shadow-xl bg-white/95 backdrop-blur-xl border border-black/10">
+                      <div className="grid grid-cols-2 gap-4 p-1">
+                        <div className="flex flex-col gap-1">
+                          {columns.left.map((s) => (
+                            <Link
+                              key={s.slug}
+                              href={`/diensten/${s.slug}`}
+                              className="px-3 py-2 rounded-lg hover:bg-black/5 text-sm text-black/80 hover:text-black transition-colors"
+                              role="menuitem"
+                            >
+                              {t(s.titleKey)}
+                            </Link>
+                          ))}
                         </div>
 
-                        <div className="border-t border-white/15 mt-3 pt-3 flex items-center justify-between px-2">
-                          <span className="text-xs text-white/60 font-medium">
-                            {t("cta_quote")}
-                          </span>
-                          <Link
-                            href="/diensten"
-                            className="inline-flex items-center gap-1 text-xs font-bold uppercase tracking-wide text-teal hover:text-white transition-colors"
-                          >
-                            {t("all_services")} →
-                          </Link>
+                        <div className="flex flex-col gap-1">
+                          {columns.right.map((s) => (
+                            <Link
+                              key={s.slug}
+                              href={`/diensten/${s.slug}`}
+                              className="px-3 py-2 rounded-lg hover:bg-black/5 text-sm text-black/80 hover:text-black transition-colors"
+                              role="menuitem"
+                            >
+                              {t(s.titleKey)}
+                            </Link>
+                          ))}
                         </div>
+                      </div>
+
+                      <div className="border-t border-black/10 mt-3 pt-3 flex items-center justify-between px-2">
+                        <span className="text-xs text-black/60 font-medium">{t("cta_quote")}</span>
+                        <Link
+                          href="/diensten"
+                          className="inline-flex items-center gap-1 text-xs font-bold uppercase tracking-wide text-teal hover:opacity-90 transition-colors"
+                        >
+                          {t("all_services")} →
+                        </Link>
+                      </div>
                     </div>
                   </motion.div>
                 )}
@@ -186,10 +176,8 @@ export default function Navbar() {
             </NavLink>
           </nav>
 
-          {/* Desktop CTAs */}
+          {/* Desktop CTA */}
           <div className="hidden md:flex items-center gap-2">
-            {/* REMOVED: Phone button from desktop (it's in preheader) */}
-            
             <Link
               href="/contact"
               className={cx(
@@ -270,7 +258,6 @@ export default function Navbar() {
               </MobileLink>
 
               <div className="mt-4 grid grid-cols-2 gap-3 pt-4 border-t border-black/5">
-                {/* Kept Mobile Call button because preheader usually scrolls away on mobile */}
                 <a
                   href={telHref(brand.phone)}
                   className={cx(

@@ -55,7 +55,7 @@ ph_paint: "Schilderwerk binnen en buiten",
 footer_intro: "Komtifix: handyman & onderhoud in Leidschendam en omgeving.",
 footer_address_line1: "Pr. Annalaan 343",
 footer_address_line2: "2263 XK Leidschendam",
-footer_rights: "Komtifix. Alle rechten voorbehouden.",
+footer_rights: " Alle rechten voorbehouden.",
 
     /* Footer service labels (kept for compatibility) */
     svc_laminaat: "Laminaat laten leggen",
